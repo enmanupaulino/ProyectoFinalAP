@@ -85,11 +85,11 @@ namespace ProyectoFinalAp2.Controllers
         public Productos Buscar(int id)
         {
             Contexto contexto = new Contexto();
-            Productos productos = new Productos();
+            Productos producto= new Productos();
 
             try
             {
-                productos = contexto.productos.Find(id);
+                producto = contexto.productos.Find(id);
 
             }
             catch (Exception)
@@ -103,19 +103,19 @@ namespace ProyectoFinalAp2.Controllers
 
             }
 
-            return productos;
+            return producto;
         }
 
         public bool Eliminar(int id)
         {
             Contexto contexto = new Contexto();
             bool paso = false;
-            Productos productos = new Productos();
+            Productos producto = new Productos();
 
             try
             {
-                productos = contexto.productos.Find(id);
-                contexto.Entry(productos).State = EntityState.Deleted;
+                producto = contexto.productos.Find(id);
+                contexto.Entry(producto).State = EntityState.Deleted;
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)

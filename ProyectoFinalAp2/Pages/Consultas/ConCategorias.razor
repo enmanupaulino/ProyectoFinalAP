@@ -1,7 +1,192 @@
 ﻿@page "/ConCategorias"
+@using ProyectoFinalAp2.Controllers
+@using ProyectoFinalAp2.Models
+@using ProyectoFinalAp2.Data
 
 <h3>cCategorias</h3>
 
+<EditForm Model="Listado">
+    <center>
+        <h1>Consulta de Categorias</h1>
+    </center>
+
+    <form>
+     
+
+        <div class="form-row">
+
+
+    
+            <div class="form-inline DivConsulta ">
+                <label for="Filtro" class="LabelConsulta  ">Filtro: </label>
+                <select class="form-control     " @bind="Filtro">
+                    <option value="0">Todo</option>
+                    <option value="1">Id</option>
+                    <option value="2">Nombre</option>
+                </select>
+            </div>
+
+      
+            <div class="form-inline D">
+                <label for="Criterio" class="LabelConsulta  ">Criterio: </label>
+                <InputText @bind-Value="@Criterio" class="form-control     " placeholder="Criterio" />
+                <p class="validation-message"> @Mensaje </p>
+            </div>
+
+
+          
+            <div class="DivConsulta text-center  ">
+                <button type="button" class="btn btn-primary" @onclick="Buscar">@*<span class="oi oi-magnifying-glass" /> *@Buscar</button>
+            </div>
+
+        
+
+            <table class="table" style="margin-top: 20px">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (ListadoPaginado.Count == 0)
+                    {
+                        <tr>
+                            <th colspan="12" style="color:black; text-align:">"No hay datos "</th>
+                        </tr>
+                    }
+                    else
+                    {
+
+                        @foreach (var item in ListadoPaginado)
+                        {
+                            <tr>
+                                <th>@item.IdCategoria</th>
+                                <th>@item.Nombre</th>
+                                <th><a class="btn btn-light" href="rCategorias/@item.IdCategoria">Ver</a></th>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+    <div class="form-row  ">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" @onclick="PaginaAnterior">
+                        <span class="oi oi-media-skip-backward"></span>
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= Paginas; i++)
+                {
+                    <li class="page-item disabled"><a class="page-link">@i</a></li>
+                }
+
+                <li class="page-item">
+                    <a class="page-link" @onclick="PaginaSiguiente">
+                        <span class="oi oi-media-skip-forward"></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</EditForm>
+
 @code {
+
+    public ControllersCategoria controllersCategoria = new ControllersCategoria();
+    private List<Categorias> Listado { get; set; }
+    private List<Categorias> ListadoPaginado { get; set; }
+
+    private string Criterio = string.Empty;
+    private string Filtro = string.Empty;
+    private string Mensaje = string.Empty;
+
+    Contexto contexto = new Contexto();
+    Paginacion paginacion = new Paginacion();
+
+    double Paginas = 0;
+    double Elementos = 0;
+    int PaginaActual = 0;
+
+    protected override void OnInitialized()
+    {
+        Listado = controllersCategoria.GetList(e => true);
+        Filtro = "0";
+
+        IniciarPaginacion();
+    }
+
+    public void IniciarPaginacion()
+    {
+        PaginaActual = 1;
+        Elementos = Listado.Count();
+        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+        ListadoPaginado = Listado.Take(paginacion.Mostrar).ToList();
+    }
+
+    private void PaginaSiguiente()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            ListadoPaginado = Listado
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+
+    private void PaginaAnterior()
+    {
+        if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            ListadoPaginado = Listado
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+
+
+    private void Buscar()
+    {
+        if (Filtro == "0")
+        {
+            Listado = controllersCategoria.GetList(e => true);
+            IniciarPaginacion();
+        }
+        else
+        {
+            if (Criterio == "")
+            {
+                Mensaje = "Criterio por el cual desea buscar";
+            }
+            else
+            {
+                Mensaje = "";
+                Listado = controllersCategoria.GetList(e => true);
+                switch (Filtro)
+                {
+                    case "1":
+                        Listado = Listado.Where(e => e.IdCategoria.ToString().Contains(Criterio.ToString())).ToList();
+                        break;
+                    case "2":
+                        Listado = Listado.Where(e => e.Nombre.ToUpper().Contains(Criterio.ToUpper())).ToList();
+                        break;
+                }
+                IniciarPaginacion();
+            }
+        }
+    }
+
 
 }

@@ -111,7 +111,7 @@
 @code {
 
     [Parameter]
-        public int ProductoId { get; set; }
+        public int IdProducto { get; set; }
 
         ControllersProductos controllersProductos = new ControllersProductos();
         private Productos Producto = new Productos();
@@ -136,16 +136,16 @@
             ListadoCategorias = controllersCategoria.GetList(e => true);
             Limpiar();
 
-            if (ProductoId != 0)
+            if (IdProducto != 0)
             {
-                Producto.IdProducto = ProductoId;
+                Producto.IdProducto = IdProducto;
                 Buscar();
             }
         }
 
         private void SeleccionarProveedor()
         {
-            Producto.IdProducto = Convert.ToInt32(ProveedorSeleccionado);
+            Producto.IdProveedor = Convert.ToInt32(ProveedorSeleccionado);
         }
 
         private void SeleccionarCategoria()
