@@ -1,0 +1,100 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">ProyectoFinalAp2</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="oi oi-plus" aria-hidden="true"></span> Counter
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="fetchdata">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ReClientes">
+                <span class="oi oi-plus" aria-hidden="true"></span> ReClientes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+
+            <NavLink class="nav-link" href="ReUsuarios">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ReUsuarios
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+
+            <NavLink class="nav-link" href="ReCategorias">
+                <span class="oi oi-plus" aria-hidden="true"></span> ReCategorias
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ReProveedores">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ReProveedores
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ReTrabajos">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ReTrabajos
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ReArticulos">
+                <span class="oi oi-plus" aria-hidden="true"></span>ReArticulos
+            </NavLink>
+        </li>
+
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConClientes">
+                <span class="oi oi-plus" aria-hidden="true"></span> ConClientes
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConUsuarios">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ConUsuarios
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConCategorias">
+                <span class="oi oi-plus" aria-hidden="true"></span> ConCategorias
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConProveedores">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> ConProveedores
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConArticulos">
+                <span class="oi oi-plus" aria-hidden="true"></span> ConArticulos
+            </NavLink>
+        </li>
+
+
+
+
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,399 @@
+﻿@page "/ReFacturacion"
+@using ProyectoFinalAp2.Controllers
+@using ProyectoFinalAp2.Models
+
+
+
+<h3>ReFacturacion</h3>
+
+
+<EditForm Model="facturacion" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <center>
+        <h1> Registro de Factura </h1>
+    </center>
+
+
+
+
+
+
+    <div class="form-group    ">
+        <label for="FacturaId ">Código</label>
+
+        <InputNumber @bind-Value="@facturacion.IdFactura" class="form-control" />
+        <div class="input-group-append">
+            <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
+        </div>
+
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="FechaIngreso" class="col-auto">Fecha</label>
+        <InputDate @bind-Value="@facturacion.Fecha" class="form-control" disabled />
+    </div>
+
+
+
+
+    <div class="form-group      ">
+        <label for="ClienteId">Cliente</label>
+        <InputSelect @bind-Value="@ClienteSelect" class="form-control" @onclick="CargarCliente">
+            <option value="0" disabled selected>Seleccione un Cliente</option>
+            @if (ListaCliente.Count == 0)
+            {
+                <option value="" disabled>No hay Cliente Registrado</option>
+            }
+            else
+            {
+                @foreach (var item in ListaCliente)
+                {
+                    <option value="@item.IdCliente">@item.Nombre</option>
+                }
+            }
+        </InputSelect>
+    </div>
+
+
+
+
+    <div class="form-group     ">
+        <label for="Producto">Producto</label>
+        <InputSelect @bind-Value="@ProductoSelect" class="form-control" @onclick="CargarProducto" @onchange="CargarProducto">
+            <option value="0" disabled selected>Seleccione un Producto</option>
+            @if (ListaProducto.Count == 0)
+            {
+                <option value="" disabled>No hay Producto Registrado</option>
+            }
+            else
+            {
+                @foreach (var item in ListaProducto)
+                {
+                    <option value="@item.IdProducto">@item.Descripcion</option>
+                }
+            }
+        </InputSelect>
+    </div>
+
+
+    <div class="form-group     ">
+        <label class="Cantidad">Cantidad</label>
+        <InputNumber @bind-Value="@Cantidad" class="form-control" @onfocusin="CalcularImporte" @onfocusout="CalcularImporte" @onclick="CalcularImporte" />
+    </div>
+
+
+
+
+    <div class="form-group     ">
+        <label for="precio">Precio</label>
+        <InputNumber @bind-Value="@Precio" class="form-control" disabled></InputNumber>
+    </div>
+
+
+    <div class="form-group     ">
+        <label for="importe">Importe</label>
+
+        <InputNumber @bind-Value="@Importe" class="form-control " disabled @onfocusin="CalcularImporte" @onfocusout="CalcularImporte" @onclick="CalcularImporte" />
+        <div class="input-group-append">
+            <button type="button" class="btn btn-success" @onclick="AgregarProducto"><span class="oi oi-plus" />&nbsp;Agregar</button>
+        </div>
+
+    </div>
+
+
+
+
+    <div class="card">
+
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Importe</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in facturacion.Detalle)
+                {
+                    <tr>
+                        <th>@item.IdProducto</th>
+                        <th>@item.Descripcion</th>
+                        <th>@item.Cantidad</th>
+                        <th>@item.Precio</th>
+                        <th>@item.Importe</th>
+                        <th><button type="button" class="btn btn-outline-danger btn-sm" @onclick="(()=> EliminarProducto(item))">Eliminar</button></th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-inline justify-content-end">
+            <label>Total:&nbsp;</label>
+            <InputNumber @bind-Value="@facturacion.Total" class="form-control" disabled />
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <div class="form-group">
+
+    <button type="submit" class="btn btn-primary"> Guardar</button>
+    <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@Mensaje</h5>
+
+
+</EditForm>
+
+
+
+
+@code {
+
+     [Parameter]
+    public int FacturaId { get; set; }
+
+    public Facturacion facturacion { get; set; }
+
+    ControllersClientes controllersClientes = new ControllersClientes();
+    ControllersProductos controllersProductos = new ControllersProductos();
+    ControllersFacturacion controllersFacturacion = new ControllersFacturacion();
+    private string ProductoSelect { get; set; }
+    private string ClienteSelect { get; set; }
+
+    private string mensaje = "";
+
+    private int Cantidad = 0;
+    private decimal Precio = 0;
+    private int Importe = 0;
+
+    private List<Productos> ListaProducto = new List<Productos>();
+    private List<Clientes> ListaCliente = new List<Clientes>();
+
+    private Clientes Cliente { get; set; }
+    private Productos Producto { get; set; }
+
+    protected override void OnInitialized()
+    {
+        ListaCliente = controllersClientes.GetList(e => true);
+        ListaProducto = controllersProductos.GetList(e => true);
+        facturacion = new Facturacion();
+        Cliente = new Clientes();
+        Producto = new Productos();
+
+        if (FacturaId != 0)
+        {
+            facturacion.IdFactura = FacturaId;
+            Buscar();
+        }
+    }
+
+    private void CargarProducto()
+    {
+        try
+        {
+            Producto = controllersProductos.Buscar(Convert.ToInt32(ProductoSelect));
+            Precio = Producto.Precio;
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+
+    private void CargarCliente()
+    {
+        try
+        {
+            Cliente = controllersClientes.Buscar(Convert.ToInt32(ClienteSelect));
+        }
+        catch (Exception ex)
+        {
+            
+        }
+    }
+
+    private bool ExisteProducto(int ProductoId)
+    {
+        bool paso = false;
+        if (facturacion.Detalle.Any(p => p.IdProducto == ProductoId))
+            paso = true;
+
+        return paso;
+    }
+
+    private void AgregarProducto()
+    {
+        if (ProductoSelect == null)
+        {
+            mensaje="Debe seleccionar un Producto";
+        }
+        else
+        {
+            if (ExisteProducto(Producto.IdProducto))
+            {
+               mensaje="Ya este producto esta agregado en la factura.";
+            }
+            else
+            {
+            if (Cantidad <= 0)
+            {
+               mensaje="La cantidad debe ser mayor a 0";
+            }
+            else
+                if (Cantidad >= 999999)
+            {
+               mensaje="La cantidad esta fuera de rango";
+                 return;
+            }
+            else
+            {
+                if (Cantidad > Producto.Cantidad)
+                {
+                   mensaje="Solo quedan " + Producto.Cantidad + " unidades de este producto";
+                }
+                else
+                {
+                    mensaje = "";
+                    facturacion.Detalle.Add(new FacturacionDetalle()
+                    {
+                        IdFactura = facturacion.IdFactura,
+                        IdProducto = Producto.IdProducto,
+                        Descripcion = Producto.Descripcion,
+                        Cantidad = Cantidad,
+                        Precio = Precio,
+                        Importe = (Cantidad * Precio)
+                    });
+                    Producto = new Productos();
+
+                    CalcularTotal();
+
+                    ProductoSelect = "0";
+                    Cantidad = 0;
+                    }
+                }
+            }
+        }
+    }
+
+
+    private void EliminarProducto(FacturacionDetalle detalle)
+    {
+        facturacion.Detalle.Remove(detalle);
+        CalcularTotal();
+    }
+
+    public void Guardar()
+    {
+        mensaje = "";
+        CalcularImporte();
+        if (ClienteSelect == null)
+        {
+            mensaje="debe seleccionar un Cliente";
+        }
+        else
+        {
+            facturacion.IdCliente = Convert.ToInt32(ClienteSelect);
+            if (facturacion.Detalle.Count == 0)
+            {
+                mensaje="Debes agregar un producto al detalle";
+            }
+            else
+            {
+                if (controllersFacturacion.Guardar(facturacion))
+                {
+                    Limpiar();
+                   mensaje="Factura Guardada";
+                }
+                else
+                {
+                    mensaje="Error al guardar Factura";
+                }
+            }
+        }
+    }
+
+    public void Buscar()
+    {
+        var factura = controllersFacturacion.Buscar(facturacion.IdFactura);
+
+        if (factura != null)
+        {
+            Limpiar();
+            facturacion = factura;
+            ClienteSelect = Convert.ToString(facturacion.IdCliente);
+            mensaje="Factura encontrada.";
+        }
+        else
+        {
+            facturacion = new Facturacion();
+            mensaje="Factura no existe";
+        }
+    }
+
+    public void Eliminar()
+    {
+        var factura = controllersFacturacion.Buscar(facturacion.IdFactura);
+
+        if (factura != null)
+        {
+            controllersFacturacion.Eliminar(facturacion.IdFactura);
+            Limpiar();
+            mensaje="Factura eliminada correctamente.";
+        }
+        else
+        {
+            mensaje="Error al eliminar esta Factura.";
+        }
+    }
+
+    public void Limpiar()
+    {
+        mensaje = "";
+        this.facturacion = new Facturacion();
+        ClienteSelect = "0";
+        ProductoSelect = "0";
+        Precio = 0;
+        Cantidad = 0;
+        Importe = 0;
+    }
+
+    public void CalcularImporte()
+    {
+        if (facturacion != null)
+        {
+            Importe = Convert.ToInt32(Precio) * Cantidad;
+        }
+        else
+        {
+           mensaje="Error al Calcular.";
+        }
+    }
+
+    private void CalcularTotal()
+    {
+        decimal total = 0;
+
+        foreach (var item in facturacion.Detalle)
+        {
+            total += item.Importe;
+        }
+
+        facturacion.Total = total;
+    }
+
+}

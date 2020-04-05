@@ -1,0 +1,305 @@
+﻿@page "/ReUsuarios"
+@using ProyectoFinalAp2.Controllers
+@using ProyectoFinalAp2.Models
+
+<h3>rUsuarios</h3>
+
+
+
+
+<EditForm Model="Usuario" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <center>
+        <h1>Registro de Usuarios</h1>
+    </center>
+
+    <form>
+        <div class="form-row">
+
+
+
+
+            <div class="form-group    ">
+                <label for="usuarioId " class="col-auto">Código</label>
+                <div class="input-group ">
+                    <InputNumber @bind-Value="@Usuario.IdUsuario" class="form-control" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="form-group     ">
+                <label for="FechaIngreso">Fecha</label>
+                <InputDate @bind-Value="@Usuario.FechaIngreso" class="form-control" />
+            </div>
+
+
+
+
+            <div class="form-group ">
+                <label for="Nombres">Nombre</label>
+                <InputText @bind-Value="@Usuario.Nombres" class="form-control" placeholder="Nombre" />
+                <ValidationMessage For="@(()=>Usuario.Nombres)" />
+            </div>
+
+
+            <div class="form-group ">
+                <label for="Apellidos">Apellido</label>
+                <InputText @bind-Value="@Usuario.Apellidos" class="form-control" placeholder="Apellido" />
+                <ValidationMessage For="@(()=>Usuario.Apellidos)" />
+            </div>
+
+
+            <div class="form-group ">
+                <label for="Email">Email</label>
+                <InputText @bind-Value="@Usuario.Email" class="form-control" placeholder="micorreo@hotmail.com" />
+                <ValidationMessage For="@(()=>Usuario.Email)" />
+                <p class="validation-message"> @MensajeEmail </p>
+            </div>
+
+
+
+
+            <div class="form-group ">
+                <label for="Usuario">Usuario</label>
+                <InputText @bind-Value="@Usuario.Usuario" class="form-control" placeholder="Nombre de usuario" />
+                <ValidationMessage For="@(()=>Usuario.Usuario)" />
+                p>
+            </div>
+
+
+            <div class="form-group ">
+                <label for="NivelUsuario">Nivel del Usuaio</label>
+                <InputSelect @bind-Value="NivelSeleccionado" class="form-control" @onclick="SeleccionarNivel">
+                    <option value="0" disabled selected>Nivel de Usuario</option>
+                    <option value="Usuario">Usuario</option>
+                    <option value="Administrador">Administrador</option>
+                </InputSelect>
+                <ValidationMessage For="@(()=>Usuario.NivelUsuario)" />
+            </div>
+
+
+
+
+            <div class="form-group ">
+                <label for="Contrasena">Contraseña</label>
+                <input type="password" @bind="@Usuario.Contrasena" class="form-control" placeholder="Contraseña" />
+                <ValidationMessage For="@(()=>Usuario.Contrasena)" />
+            </div>
+
+
+            <div class="form-group container ">
+                <label for="ConfirmarContrasena">Confirmar Contraseña</label>
+                <input type="password" @bind="@ConfirmarContrasena" class="form-control" placeholder="Confirmar Contrasena" />
+                <p class="validation-message"> @MensajeContrasena </p>
+            </div>
+
+
+
+        </div>
+    </form>
+
+    @*<ValidationSummary />*@
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@mensaje</h5>
+
+   
+</EditForm>
+
+
+
+
+
+
+@code {
+    [Parameter]
+    public int UsuarioId { get; set; }
+
+    ControllersUsuarios controllersUsuarios = new ControllersUsuarios();
+    private Usuarios Usuario { get; set; }
+    private string NivelSeleccionado = string.Empty;
+    private string ConfirmarContrasena = string.Empty;
+
+    private string MensajeEmail = string.Empty;
+    private string MensajeUsuario =string.Empty;
+    private string MensajeContrasena =string.Empty;
+    public string mensaje { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Usuario = new Usuarios();
+        Limpiar();
+
+        if (UsuarioId != 0)
+        {
+            Usuario.IdUsuario = UsuarioId;
+            Buscar();
+        }
+    }
+
+    private void SeleccionarNivel()
+    {
+        Usuario.NivelUsuario = NivelSeleccionado;
+    }
+
+    public void Guardar()
+    {
+
+        LimpiarMensajes();
+
+        if (ExisteEmail())
+        {
+            MensajeEmail = "Existe un usuario con este Email, debe ingresar otro.";
+            return;
+        }
+
+        if (ExisteUsuario())
+        {
+            MensajeUsuario = "Existe un usuario con este nombre de Usuario, debe ingresar otro.";
+            return;
+        }
+
+        if (Usuario.Contrasena == ConfirmarContrasena == false)
+        {
+            MensajeContrasena = "Las contraseñas no coinciden.";
+            return;
+        }
+
+        SeleccionarNivel();
+        if (controllersUsuarios.Guardar(Usuario))
+        {
+            Limpiar();
+            mensaje="Usuario guardado correctamente";
+
+        }
+        else
+        {
+            mensaje="Error al guardar el usuario";
+        }
+    }
+
+    public void Buscar()
+    {
+        Usuarios usuario = controllersUsuarios.Buscar(Usuario.IdUsuario);
+
+        if (usuario != null)
+        {
+            Limpiar();
+            Usuario = usuario;
+            NivelSeleccionado = Usuario.NivelUsuario;
+            mensaje="Usuario encontrado.";
+
+        }
+        else
+        {
+            Limpiar();
+           mensaje="El usuario no fue encontrado.";
+
+        }
+    }
+
+    public void Eliminar()
+    {
+        Usuarios usuario = controllersUsuarios.Buscar(Usuario.IdUsuario);
+
+        if (usuario != null)
+        {
+            if (controllersUsuarios.Eliminar(Usuario.IdUsuario))
+            {
+                Limpiar();
+               mensaje="Usuario eliminado correctamente.";
+            }
+            else
+            {
+                mensaje="Error al eliminar el Usuario.";
+            }
+        }
+        else
+        {
+            mensaje="Error al eliminar el Usuario.";
+        }
+    }
+
+    public bool ExisteEmail() 
+    {
+        bool paso = false;
+        var Listado = new List<Usuarios>();
+
+        Listado = controllersUsuarios.GetList(p => p.Email == Usuario.Email);
+
+        if (Listado.Count == 1)
+        {
+            if(Usuario.IdUsuario== 0)
+                return paso = true;
+
+            Usuarios UsuarioTemporal = new Usuarios();
+            UsuarioTemporal = Listado[0];
+            if (UsuarioTemporal.IdUsuario != Usuario.IdUsuario)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
+
+    public bool ExisteUsuario() //Valida si el email existe y lo tiene otro usuario 
+    {
+        bool paso = false;
+        var Listado = new List<Usuarios>();
+
+        Listado = controllersUsuarios.GetList(p => p.Usuario == Usuario.Usuario);
+
+        if (Listado.Count == 1)
+        {
+            if(Usuario.IdUsuario== 0)
+                return paso = true;
+
+            Usuarios UsuarioTemporal = new Usuarios();
+            UsuarioTemporal = Listado[0];
+            if (UsuarioTemporal.IdUsuario != Usuario.IdUsuario)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
+
+    public void Limpiar()
+    {
+        this.Usuario = new Usuarios();
+        NivelSeleccionado = "0";
+        ConfirmarContrasena = string.Empty;
+        LimpiarMensajes();
+    }
+
+    public void LimpiarMensajes()
+    {
+        MensajeEmail = string.Empty;
+        MensajeUsuario = string.Empty;
+        MensajeContrasena =string.Empty;
+    }
+
+}

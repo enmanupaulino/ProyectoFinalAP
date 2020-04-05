@@ -1,0 +1,166 @@
+﻿@page "/ReCategorias"
+@using ProyectoFinalAp2.Controllers
+@using ProyectoFinalAp2.Models
+
+
+
+<h3>Registro de Categorias</h3>
+
+<EditForm Model="@Categoria" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+
+    <div class=" form-group">
+        <label for=" CategoriaId">Id</label>
+        <InputNumber @bind-Value="Categoria.IdCategoria"></InputNumber>
+        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>Categoria.IdCategoria)" />
+
+    </div>
+    <div class="form-group">
+        <label for=" Descripcion">Descripcion</label>
+        <InputText @bind-Value="Categoria.Nombre" class="form-group" />
+        <ValidationMessage For="@(()=>Categoria.Nombre)" />
+    </div>
+   
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@mensaje</h5>
+
+
+
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public int CategoriaId { get; set; }
+
+    ControllersCategoria controllersCategoria = new ControllersCategoria();
+    Categorias Categoria = new Categorias();
+
+    public string mensaje { get; set; }
+    string MensajeNombre;
+
+    protected override void OnInitialized()
+    {
+        Categoria = new Categorias();
+        Limpiar();
+        if (CategoriaId != 0)
+        {
+            Categoria.IdCategoria = CategoriaId;
+            Buscar();
+        }
+    }
+
+
+    public void Guardar()
+    {
+
+        LimpiarMensajes();
+
+        if (ExisteNombre())
+        {
+            MensajeNombre = "Existe una categoria con este nombre, debe ingresar otro.";
+            return;
+        }
+
+        if (controllersCategoria.Guardar(Categoria))
+        {
+            Limpiar();
+            mensaje="Categoría guardada correctamente ,Exito";
+
+        }
+        else
+        {
+            mensaje="Error al guardar Categoría, Fallo";
+
+        }
+    }
+
+    public void Buscar()
+    {
+        Categorias CategoriaTemporal = controllersCategoria.Buscar(Categoria.IdCategoria);
+
+        if (CategoriaTemporal != null)
+        {
+            Limpiar();
+            Categoria = CategoriaTemporal;
+            mensaje="Categoría encontrado., Exito";
+
+        }
+        else
+        {
+            Limpiar();
+            mensaje="La Categoría no fue encontrado., Fallo";
+
+        }
+    }
+
+    public void Eliminar()
+    {
+        Categorias categoria = controllersCategoria.Buscar(Categoria.IdCategoria);
+
+        if (categoria != null)
+        {
+            if (controllersCategoria.Eliminar(Categoria.IdCategoria))
+            {
+                Limpiar();
+                mensaje="Categoría eliminado correctamente., Exito";
+            }
+            else
+            {
+                mensaje="Error al eliminar la Categoría., Fallo";
+            }
+        }
+        else
+        {
+            mensaje="Error al eliminar la Categoría., Fallo";
+        }
+    }
+
+    public bool ExisteNombre() //Valida si el nombre existe y lo tiene otra categoria
+    {
+        bool paso = false;
+        var Listado = new List<Categorias>();
+
+        Listado = controllersCategoria.GetList(p => p.Nombre == Categoria.Nombre);
+
+        if (Listado.Count == 1)
+        {
+            if(Categoria.IdCategoria == 0)
+                return paso = true;
+
+            Categorias CategoriaTemporal = new Categorias();
+            CategoriaTemporal = Listado[0];
+            if (CategoriaTemporal.IdCategoria != CategoriaTemporal.IdCategoria)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
+
+    public void Limpiar()
+    {
+        this.Categoria = new Categorias();
+        LimpiarMensajes();
+    }
+
+    public void LimpiarMensajes()
+    {
+        MensajeNombre = string.Empty;
+    }
+
+}

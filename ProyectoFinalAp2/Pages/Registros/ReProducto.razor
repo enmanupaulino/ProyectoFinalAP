@@ -1,0 +1,277 @@
+﻿@page "/ReArticulos"
+@using ProyectoFinalAp2.Controllers
+@using ProyectoFinalAp2.Models
+
+<h3>rArticulos</h3>
+
+
+
+<EditForm Model="@Producto" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+
+    <div class=" form-group">
+        <label for=" Articulo Id">Id</label>
+        <InputNumber @bind-Value="Producto.IdProducto"></InputNumber>
+        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>Producto.IdProducto)" />
+
+    </div>
+    <div class=" form-group">
+        <label for="  Decripcion">Decripcion</label>
+        <InputText @bind-Value="Producto.Descripcion"></InputText>
+        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>Producto.Descripcion)" />
+
+    </div>
+    <div class="form-group">
+        <label for="Proveedor">Proveedor</label>
+        <InputSelect @bind-Value="@ProveedorSeleccionado" class="form-control " @onchange="SeleccionarProveedor" @onclick="SeleccionarProveedor">
+            <option value="0" disabled selected>Seleccione un Proveedor</option>
+            @if (ListadoProveedores.Count <= 0)
+            {
+                <option value="" disabled>No Hay Proveedores Registrado</option>
+            }
+            else
+            {
+                @foreach (var item in ListadoProveedores)
+                {
+                    <option value="@item.IdProveedor">@item.Nombre</option>
+                }
+            }
+        </InputSelect>
+        <ValidationMessage For="@(()=>Producto.IdProveedor)" />
+    </div>
+
+
+    <div class="form-group">
+        <label for=" categoria">categoria</label>
+        <InputDate @bind-Value="Producto.FechaCreacion" class="form-group"></InputDate>
+        <ValidationMessage For="@(()=>Producto.FechaCreacion)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Categoria">Categoría</label>
+        <InputSelect @bind-Value="@CategoriaSeleccionada" class="form-control " @onchange="SeleccionarCategoria" @onclick="SeleccionarCategoria">
+            <option value="0" disabled selected>Seleccione una Categoría</option>
+            @if (ListadoCategorias.Count <= 0)
+            {
+                <option value="" disabled>No Hay Categoria Registrada</option>
+            }
+            else
+            {
+                @foreach (var item in ListadoCategorias)
+                {
+                    <option value="@item.IdCategoria">@item.Nombre</option>
+                }
+            }
+        </InputSelect>
+        <ValidationMessage For="@(()=>Producto.IdCategoria)" />
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="Dispobible">Disponible</label>
+        <InputNumber @bind-Value="Producto.Cantidad" class="form-group" disabled />
+        <ValidationMessage For="@(()=>Producto.Cantidad)" />
+    </div>
+    <div class="form-group">
+        <label for="Costo">Costo</label>
+        <InputNumber @bind-Value="@Producto.Costo" class="form-control" step="10" @onfocusin="CalcularPrecio" @onfocusout="CalcularPrecio" @onkeydown="CalcularPrecio" />
+        <ValidationMessage For="@(()=>Producto.Costo)" />
+    </div>
+    <div class="form-group">
+        <label for="Ganancia">% Ganancia</label>
+        <input type="number" @bind="@Producto.Ganancia" max="100" class="form-control" @onfocusin="CalcularPrecio" @onfocusout="CalcularPrecio" @onkeydown="CalcularPrecio" />
+        <ValidationMessage For="@(()=>Producto.Ganancia)" />
+    </div>
+    <div class="form-group">
+        <label for="Precio">Precio</label>
+        <InputNumber @bind-Value="@Producto.Precio" class="form-control" disabled />
+        <ValidationMessage For="@(()=>Producto.Precio)" />
+    </div>
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@mensaje</h5>
+
+
+
+
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+        public int ProductoId { get; set; }
+
+        ControllersProductos controllersProductos = new ControllersProductos();
+        private Productos Producto = new Productos();
+
+        ControllersProveedor controllersProveedor = new ControllersProveedor();
+        private Proveedores Proveedor = new Proveedores();
+        private List<Proveedores> ListadoProveedores{ get; set; }
+        private string ProveedorSeleccionado = string.Empty;
+
+        ControllersCategoria controllersCategoria = new ControllersCategoria();
+        private Categorias Categoria = new Categorias();
+        private List<Categorias> ListadoCategorias { get; set; }
+        private string CategoriaSeleccionada = string.Empty;
+
+        private string mensaje;
+
+
+        protected override void OnInitialized()
+        {
+            Producto = new Productos();
+            ListadoProveedores = controllersProveedor.GetList(e => true);
+            ListadoCategorias = controllersCategoria.GetList(e => true);
+            Limpiar();
+
+            if (ProductoId != 0)
+            {
+                Producto.IdProducto = ProductoId;
+                Buscar();
+            }
+        }
+
+        private void SeleccionarProveedor()
+        {
+            Producto.IdProducto = Convert.ToInt32(ProveedorSeleccionado);
+        }
+
+        private void SeleccionarCategoria()
+        {
+            Producto.IdCategoria = Convert.ToInt32(CategoriaSeleccionada);
+        }
+
+        public void Guardar()
+        {
+
+            LimpiarMensajes();
+
+            if (ExisteDescripcion())
+            {
+                mensaje = "Existe un producto con esta descripción, debe ingresar otra.";
+                return;
+            }
+
+            SeleccionarProveedor();
+            SeleccionarCategoria();
+            CalcularPrecio();
+            if (controllersProductos.Guardar(Producto))
+            {
+                Limpiar();
+                mensaje="Producto guardado correctamente.,Exito";
+
+            }
+            else
+            {
+                mensaje="Error al guardar el Producto.,Fallo";
+
+            }
+        }
+
+        public void Buscar()
+        {
+            Productos ProductoTemporal = controllersProductos.Buscar(Producto.IdProducto);
+
+            if (ProductoTemporal != null)
+            {
+                Limpiar();
+                Producto = ProductoTemporal;
+                ProveedorSeleccionado = Producto.IdProducto.ToString();
+                CategoriaSeleccionada = Producto.IdCategoria.ToString();
+                CalcularPrecio();
+                mensaje="Producto encontrado, Exito";
+
+            }
+            else
+            {
+
+                Limpiar();
+                mensaje="El Producto no fue encontrado., Fallo";
+
+            }
+        }
+
+        public void Eliminar()
+        {
+            Productos producto = controllersProductos.Buscar(Producto.IdProducto);
+
+            if (producto != null)
+            {
+                if (controllersProductos.Eliminar(Producto.IdProducto))
+                {
+                    Limpiar();
+                    mensaje="Producto eliminado correctamente.";
+                    CalcularPrecio();
+
+                }
+                else
+                {
+                    mensaje="Error al eliminar el Producto.";
+
+                }
+            }
+            else
+            {
+                mensaje="Error al eliminar el Producto.";
+
+            }
+        }
+
+        public bool ExisteDescripcion() 
+        {
+            bool paso = false;
+            var Listado = new List<Productos>();
+
+            Listado = controllersProductos.GetList(p => p.Descripcion == Producto.Descripcion);
+
+            if (Listado.Count == 1)
+            {
+                if(Producto.IdProducto == 0)
+                    return paso = true;
+
+                Productos productos = new Productos();
+                productos = Listado[0];
+                if (productos.IdProducto != Producto.IdProducto)
+                {
+                    paso = true;
+                }
+            }
+            else if (Listado.Count > 1)
+            {
+                paso = true;
+            }
+
+            return paso;
+        }
+
+        public void CalcularPrecio()
+        {
+            Producto.Precio = Producto.Costo + (Producto.Costo * (Producto.Ganancia / 100));
+        }
+
+        public void Limpiar()
+        {
+            this.Producto = new Productos();
+            ProveedorSeleccionado = "0";
+            CategoriaSeleccionada = "0";
+            LimpiarMensajes();
+        }
+
+        public void LimpiarMensajes()
+        {
+            mensaje = string.Empty;
+        }
+
+}

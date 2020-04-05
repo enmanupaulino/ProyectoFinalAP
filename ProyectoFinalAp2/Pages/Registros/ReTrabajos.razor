@@ -1,0 +1,215 @@
+﻿@page  "/ReTrabajos"
+@using ProyectoFinalAp2.Controllers
+@using ProyectoFinalAp2.Models
+
+<h3>ReTrabajos</h3>
+
+<EditForm Model="@trabajos" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+   
+    <div class=" form-group">
+        <label for=" RegistroId">Id</label>
+        <InputNumber @bind-Value="trabajos.IdTrabajo"></InputNumber>
+        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+        <ValidationMessage For="@(()=>trabajos.IdTrabajo)" />
+
+    </div>
+    <div class="form-group">
+        <label for=" Descripcion">Descripcion</label>
+        <InputText @bind-Value="trabajos.Descripcion" class="form-group" />
+        <ValidationMessage For="@(()=>trabajos.Descripcion)" />
+    </div>
+    <div class="form-group">
+        <label for=" Problema">Problema</label>
+        <InputNumber @bind-Value="trabajos.CantidadHojas" @oninput="Calcular" @onfocus="Calcular" @onfocusout="Calcular" class="form-group" />
+        <ValidationMessage For="@(()=>trabajos.CantidadHojas)" />
+    </div>
+    <div class="form-group">
+        <label for=" Solucion">Solucion</label>
+        <InputNumber @bind-Value="trabajos.Total"  disabled   class="form-group " />
+        <ValidationMessage For="@(()=>trabajos.Total)" />
+    </div>
+    <div class="form-group">
+        <label for=" Solucion">Solucion</label>
+        <InputDate @bind-Value="trabajos.Fecha" class="form-group" />
+        <ValidationMessage For="@(()=>trabajos.Fecha)" />
+    </div>
+
+
+
+
+
+    <button type="button" class="btn btn-outline-info" @onclick="Agregar">Agregar</button>
+
+    <br />
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Trabajo Id</th>
+                    <th>Decripcion</th>
+                    <th>Cantidad de Hojas</th>
+                    <th>Total</th>
+                   
+                    
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in trabajos.Detalles)
+                {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.IdTrabajo</td>
+                    <th>@item.Descripcion</th>
+                    <td>@item.CantidadHojas</td>
+                    <th>@item.Total</th>
+                    
+                   
+
+
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+
+        <button type="submit" class="btn btn-primary"> Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+    </div>
+
+    <h5>@Mensaje</h5>
+
+
+
+</EditForm>
+
+
+
+
+@code {
+
+
+    List<Trabajos> lista = new List<Trabajos>();
+
+
+
+
+    private void Agregar()
+    {
+
+        {
+            trabajos.Detalles.Add(new TrabajoDetalle()
+            {
+
+                IdTrabajo = trabajos.IdTrabajo,
+
+                CantidadHojas = trabajos.CantidadHojas,
+
+                Total=trabajos.CantidadHojas*10,
+                Descripcion = trabajos.Descripcion,
+
+            });
+
+        }
+
+    }
+
+
+
+
+    public Trabajos trabajos = new Trabajos();
+    public string Mensaje;
+    private String problema;
+    private String solucion;
+    private int Id;
+
+    [Parameter]
+    public int CurrentId { get; set; }
+    protected override void OnInitialized()
+    {
+        ControllersTrabajo controllersTrabajo = new ControllersTrabajo();
+        if (CurrentId != 0)
+        {
+            trabajos = controllersTrabajo.Buscar(CurrentId);
+        }
+    }
+
+    public void Calcular()
+    {
+        trabajos.Total = (trabajos.CantidadHojas * 10);
+    }
+
+    public void Guardar()
+    {
+        ControllersTrabajo controllersTrabajo = new ControllersTrabajo();
+
+
+        if (controllersTrabajo.Guardar(trabajos))
+        {
+            Mensaje = "Guardado correctamente";
+            this.trabajos = new Trabajos();
+            problema = string.Empty;
+            solucion = string.Empty;
+            Id = 0;
+
+        }
+        else
+        {
+
+            Mensaje = "Guardado";
+            this.trabajos = new Trabajos();
+        }
+
+    }
+    public void Limpiar()
+    {
+        this.trabajos = new Trabajos();
+
+    }
+    public void Buscar()
+    {
+        ControllersTrabajo controllersTrabajo = new ControllersTrabajo();;
+
+        var trabajo = controllersTrabajo.Buscar(trabajos.IdTrabajo);
+        if (trabajo != null)
+        {
+            trabajos = trabajo;
+            Mensaje = "LLamada encontrada";
+        }
+        else
+        {
+            this.trabajos = new Trabajos();
+            Mensaje = "Llamada no encontrada";
+        }
+
+    }
+    public void Eliminar()
+    {
+        ControllersTrabajo controllersTrabajo = new ControllersTrabajo();
+
+        var trabajo = controllersTrabajo.Buscar(trabajos.IdTrabajo);
+        if (trabajo != null)
+        {
+            if (controllersTrabajo.Eliminar(trabajos.IdTrabajo))
+            {
+                this.trabajos = new Trabajos();
+                Mensaje = "LLamada eliminada";
+            }
+            else
+            {
+                this.trabajos = new Trabajos();
+                Mensaje = "Error al Eliminar ";
+            }
+        }
+    }
+
+
+}
