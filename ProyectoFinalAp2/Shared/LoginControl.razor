@@ -1,40 +1,43 @@
-﻿<h3>Iniciar Sesion</h3>
+﻿
 @page "/loginControl"
 
 @using System.Web;
 
-<AuthorizeView>
+    <AuthorizeView>
 
-    <Authorized>
+        <Authorized>
 
-        <b>Hello, @context.User.Identity.Name!</b>
+            <b>Hola, @context.User.Identity.Name!</b>
 
-        <a class="ml-md-auto btn btn-primary"
-           href="/logout?returnUrl=/"
-           target="_top">Cerrar Sesion</a>
+            <a class="ml-md-auto btn btn-primary"
+               href="/logout?returnUrl=/"
+               target="_top">Cerrar Sesion</a>
 
-    </Authorized>
+        </Authorized>
 
-    <NotAuthorized>
+        <NotAuthorized>
 
-        <input type="text"
-               placeholder="Usuario"
-               @bind="@Username"
-              />
+            <input type="text"
+                   placeholder="Usuario"
+                   @bind="@Username" />
 
-        &nbsp;&nbsp;
+            &nbsp;&nbsp;
 
-        <input type="password"
-               placeholder="Contraseña"
-               @bind="@Password" />
+            <input type="password"
+                   placeholder="Contraseña"
+                   @bind="@Password" />
 
-        <a class="ml-md-auto btn btn-primary"
-           href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
-           target="_top">iniciar Sesion</a>
+            <a class="ml-md-auto btn btn-primary"
+               href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
+               target="_top">Iniciar Sesion</a>
 
-    </NotAuthorized>
+            <a class="ml-md-auto btn btn-primary"
+               href="ReUsuarios "
+               target="_top">Registrarse</a>
 
-</AuthorizeView>
+        </NotAuthorized>
+       
+    </AuthorizeView>
 
 @code {
     string Username = "";

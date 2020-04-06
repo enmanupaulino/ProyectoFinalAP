@@ -2,7 +2,7 @@
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
 
-<h3>rUsuarios</h3>
+
 
 
 
@@ -233,34 +233,9 @@
         }
     }
 
-    public bool ExisteEmail() 
-    {
-        bool paso = false;
-        var Listado = new List<Usuarios>();
+    
 
-        Listado = controllersUsuarios.GetList(p => p.Email == Usuario.Email);
-
-        if (Listado.Count == 1)
-        {
-            if(Usuario.IdUsuario== 0)
-                return paso = true;
-
-            Usuarios UsuarioTemporal = new Usuarios();
-            UsuarioTemporal = Listado[0];
-            if (UsuarioTemporal.IdUsuario != Usuario.IdUsuario)
-            {
-                paso = true;
-            }
-        }
-        else if (Listado.Count > 1)
-        {
-            paso = true;
-        }
-
-        return paso;
-    }
-
-    public bool ExisteUsuario() //Valida si el email existe y lo tiene otro usuario 
+    public bool ExisteUsuario() 
     {
         bool paso = false;
         var Listado = new List<Usuarios>();
@@ -301,5 +276,30 @@
         MensajeUsuario = string.Empty;
         MensajeContrasena =string.Empty;
     }
+public bool ExisteEmail() 
+    {
+        bool paso = false;
+        var Listado = new List<Usuarios>();
 
+        Listado = controllersUsuarios.GetList(p => p.Email == Usuario.Email);
+
+        if (Listado.Count == 1)
+        {
+            if(Usuario.IdUsuario== 0)
+                return paso = true;
+
+            Usuarios UsuarioTemporal = new Usuarios();
+            UsuarioTemporal = Listado[0];
+            if (UsuarioTemporal.IdUsuario != Usuario.IdUsuario)
+            {
+                paso = true;
+            }
+        }
+        else if (Listado.Count > 1)
+        {
+            paso = true;
+        }
+
+        return paso;
+    }
 }

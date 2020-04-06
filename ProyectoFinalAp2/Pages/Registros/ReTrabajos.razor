@@ -8,7 +8,7 @@
     <EditForm Model="@trabajos" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
         @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-      .Result.User.Identity.IsAuthenticated)
+     .Result.User.Identity.IsAuthenticated)
         {
             <h3>Registro de Trabajos</h3>
             <div class=" form-group">
@@ -92,9 +92,13 @@
             <h5>@Mensaje</h5>
 
         }
-        <h1>No se ha Registrado</h1>
+        else
+        {
+            <h1>No esta registrado</h1>
+            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+        }
 
-        </EditForm>
+    </EditForm>
 
 
 
@@ -187,12 +191,12 @@
         if (trabajo != null)
         {
             trabajos = trabajo;
-            Mensaje = "LLamada encontrada";
+            Mensaje = "Trabajo encontrado";
         }
         else
         {
             this.trabajos = new Trabajos();
-            Mensaje = "Llamada no encontrada";
+            Mensaje = "Trabajo no encontrado";
         }
 
     }
@@ -206,7 +210,7 @@
             if (controllersTrabajo.Eliminar(trabajos.IdTrabajo))
             {
                 this.trabajos = new Trabajos();
-                Mensaje = "LLamada eliminada";
+                Mensaje = "Trabajo Elimincado";
             }
             else
             {

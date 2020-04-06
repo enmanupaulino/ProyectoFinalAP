@@ -8,7 +8,7 @@
 
     <EditForm Model="Listado">
         @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-         .Result.User.Identity.IsAuthenticated)
+        .Result.User.Identity.IsAuthenticated)
         {
 
             <h1>Consulta de Clientes</h1>
@@ -127,8 +127,11 @@
                 </nav>
             </div>
         }
-        <h1>No se ha registrado</h1>
-        <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+        else
+        {
+            <h1>No esta registrado</h1>
+            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+        }
     </EditForm>
 
 @code {

@@ -7,161 +7,167 @@
 
 
 
-<EditForm Model="facturacion" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-    .Result.User.Identity.IsAuthenticated)
-    {
-       
+    <EditForm Model="facturacion" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+       .Result.User.Identity.IsAuthenticated)
+        {
+
             <h1> Registro de Factura </h1>
-      
 
 
-        <div class="form-group    ">
-            <label for="FacturaId ">Id</label>
 
-            <InputNumber @bind-Value="@facturacion.IdFactura" class="form-control" />
-            <div class="input-group-append">
-                <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
+            <div class="form-group    ">
+                <label for="FacturaId ">Id</label>
+
+                <InputNumber @bind-Value="@facturacion.IdFactura" class="form-control" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
+                </div>
+
             </div>
 
-        </div>
 
 
-
-        <div class="form-group">
-            <label for="FechaIngreso" class="col-auto">Fecha</label>
-            <InputDate @bind-Value="@facturacion.Fecha" class="form-control" disabled />
-        </div>
-
-
-
-
-        <div class="form-group      ">
-            <label for="ClienteId">Cliente</label>
-            <InputSelect @bind-Value="@ClienteSelect" class="form-control" @onclick="CargarCliente">
-                <option value="0" disabled selected>Seleccione un Cliente</option>
-                @if (ListaCliente.Count == 0)
-                    {
-                    <option value="" disabled>No hay Cliente Registrado</option>
-                    }
-                    else
-                    {
-                    @foreach (var item in ListaCliente)
-                        {
-                        <option value="@item.IdCliente">@item.Nombre</option>
-                        }
-                    /**/
-                    }
-                /**/
-            </InputSelect>
-        </div>
-
-
-
-
-        <div class="form-group     ">
-            <label for="Producto">Producto</label>
-            <InputSelect @bind-Value="@ProductoSelect" class="form-control" @onclick="CargarProducto" @onchange="CargarProducto">
-                <option value="0" disabled selected>Seleccione un Producto</option>
-                @if (ListaProducto.Count == 0)
-                    {
-                    <option value="" disabled>No hay Producto Registrado</option>
-                    }
-                    else
-                    {
-                    @foreach (var item in ListaProducto)
-                        {
-                        <option value="@item.IdProducto">@item.Descripcion</option>
-                        }
-                    /**/
-                    }
-                /**/
-            </InputSelect>
-        </div>
-
-
-        <div class="form-group     ">
-            <label class="Cantidad">Cantidad</label>
-            <InputNumber @bind-Value="@Cantidad" class="form-control" @onfocusin="CalcularImporte" @onfocusout="CalcularImporte" @onclick="CalcularImporte" />
-        </div>
-
-
-
-
-        <div class="form-group     ">
-            <label for="precio">Precio</label>
-            <InputNumber @bind-Value="@Precio" class="form-control" disabled></InputNumber>
-        </div>
-
-
-        <div class="form-group     ">
-            <label for="importe">Importe</label>
-
-            <InputNumber @bind-Value="@Importe" class="form-control " disabled @onfocusin="CalcularImporte" @onfocusout="CalcularImporte" @onclick="CalcularImporte" />
-            <div class="input-group-append">
-                <button type="button" class="btn btn-success" @onclick="AgregarProducto"><span class="oi oi-plus" />&nbsp;Agregar</button>
+            <div class="form-group">
+                <label for="FechaIngreso" class="col-auto">Fecha</label>
+                <InputDate @bind-Value="@facturacion.Fecha" class="form-control" disabled />
             </div>
 
-        </div>
+
+
+
+            <div class="form-group      ">
+                <label for="ClienteId">Cliente</label>
+                <InputSelect @bind-Value="@ClienteSelect" class="form-control" @onclick="CargarCliente">
+                    <option value="0" disabled selected>Seleccione un Cliente</option>
+                    @if (ListaCliente.Count == 0)
+                        {
+                        <option value="" disabled>No hay Cliente Registrado</option>
+                        }
+                        else
+                        {
+                        @foreach (var item in ListaCliente)
+                            {
+                            <option value="@item.IdCliente">@item.Nombre</option>
+                            }
+                        /**/
+                        /**/
+                        }
+                    /**/
+                </InputSelect>
+            </div>
 
 
 
 
-        <div class="card">
+            <div class="form-group     ">
+                <label for="Producto">Producto</label>
+                <InputSelect @bind-Value="@ProductoSelect" class="form-control" @onclick="CargarProducto" @onchange="CargarProducto">
+                    <option value="0" disabled selected>Seleccione un Producto</option>
+                    @if (ListaProducto.Count == 0)
+                        {
+                        <option value="" disabled>No hay Producto Registrado</option>
+                        }
+                        else
+                        {
+                        @foreach (var item in ListaProducto)
+                            {
+                            <option value="@item.IdProducto">@item.Descripcion</option>
+                            }
+                        /**/
+                        /**/
+                        }
+                    /**/
+                </InputSelect>
+            </div>
 
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Descripcion</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                        <th>Importe</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in facturacion.Detalle)
-                    {
+
+            <div class="form-group     ">
+                <label class="Cantidad">Cantidad</label>
+                <InputNumber @bind-Value="@Cantidad" class="form-control" @onfocusin="CalcularImporte" @onfocusout="CalcularImporte" @onclick="CalcularImporte" />
+            </div>
+
+
+
+
+            <div class="form-group     ">
+                <label for="precio">Precio</label>
+                <InputNumber @bind-Value="@Precio" class="form-control" disabled></InputNumber>
+            </div>
+
+
+            <div class="form-group     ">
+                <label for="importe">Importe</label>
+
+                <InputNumber @bind-Value="@Importe" class="form-control " disabled @onfocusin="CalcularImporte" @onfocusout="CalcularImporte" @onclick="CalcularImporte" />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-success" @onclick="AgregarProducto"><span class="oi oi-plus" />&nbsp;Agregar</button>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="card">
+
+                <table class="table">
+                    <thead class="thead-light">
                         <tr>
-                            <th>@item.IdProducto</th>
-                            <th>@item.Descripcion</th>
-                            <th>@item.Cantidad</th>
-                            <th>@item.Precio</th>
-                            <th>@item.Importe</th>
-                            <th><button type="button" class="btn btn-outline-danger btn-sm" @onclick="(()=> EliminarProducto(item))">Eliminar</button></th>
+                            <th>Codigo</th>
+                            <th>Descripcion</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Importe</th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            <div class="form-inline justify-content-end">
-                <label>Total:&nbsp;</label>
-                <InputNumber @bind-Value="@facturacion.Total" class="form-control" disabled />
+                    </thead>
+                    <tbody>
+                        @foreach (var item in facturacion.Detalle)
+                        {
+                            <tr>
+                                <th>@item.IdProducto</th>
+                                <th>@item.Descripcion</th>
+                                <th>@item.Cantidad</th>
+                                <th>@item.Precio</th>
+                                <th>@item.Importe</th>
+                                <th><button type="button" class="btn btn-outline-danger btn-sm" @onclick="(()=> EliminarProducto(item))">Eliminar</button></th>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="form-inline justify-content-end">
+                    <label>Total:&nbsp;</label>
+                    <InputNumber @bind-Value="@facturacion.Total" class="form-control" disabled />
+                </div>
+
+
             </div>
 
 
-        </div>
 
 
 
 
 
+            <div class="form-group">
+
+                <button type="submit" class="btn btn-primary"> Guardar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+            </div>
+
+            <h5>@mensaje</h5>
 
 
-        <div class="form-group">
-
-            <button type="submit" class="btn btn-primary"> Guardar</button>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-        </div>
-
-        <h5>@mensaje</h5>
-
-
-    }
-    <h1>No se ha Registrado</h1>
-</EditForm>
+        }
+        else
+        {
+            <h1>No esta registrado</h1>
+            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+        }
+    </EditForm>
 
 
 

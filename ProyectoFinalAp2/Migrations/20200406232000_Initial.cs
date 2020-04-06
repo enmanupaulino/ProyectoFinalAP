@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinalAp2.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdCategoria = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -25,7 +25,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdCliente = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(nullable: true),
                     Cedula = table.Column<string>(nullable: true),
                     Correo = table.Column<string>(nullable: true),
@@ -44,7 +44,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdEntrada = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -57,7 +57,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdFactura = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdCliente = table.Column<int>(nullable: false),
                     Usuario = table.Column<string>(nullable: true),
                     IdProducto = table.Column<int>(nullable: false),
@@ -74,7 +74,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdProducto = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     Descripcion = table.Column<string>(maxLength: 25, nullable: false),
                     IdProveedor = table.Column<int>(nullable: false),
@@ -94,7 +94,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdProveedor = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Nombre = table.Column<string>(maxLength: 40, nullable: false),
                     Telefono = table.Column<string>(maxLength: 10, nullable: false),
@@ -110,7 +110,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdTrabajo = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(nullable: true),
                     CantidadHojas = table.Column<decimal>(nullable: false),
                     Total = table.Column<decimal>(nullable: false),
@@ -126,7 +126,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdUsuario = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FechaIngreso = table.Column<DateTime>(nullable: false),
                     Nombres = table.Column<string>(maxLength: 20, nullable: false),
                     Apellidos = table.Column<string>(maxLength: 20, nullable: false),
@@ -145,7 +145,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdEntradaDetalle = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdEntrada = table.Column<int>(nullable: false),
                     IdProducto = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
@@ -167,7 +167,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     IdFacturaDetalle = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdFactura = table.Column<int>(nullable: false),
                     IdProducto = table.Column<int>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
@@ -191,7 +191,7 @@ namespace ProyectoFinalAp2.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     IdTrabajo = table.Column<int>(nullable: false),
                     CantidadHojas = table.Column<decimal>(nullable: false),
                     Descripcion = table.Column<string>(nullable: true),
