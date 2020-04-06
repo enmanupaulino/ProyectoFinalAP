@@ -1,42 +1,48 @@
 ﻿@page "/ReCategorias"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 
-<h3>Registro de Categorias</h3>
+    <EditForm Model="@Categoria" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+       .Result.User.Identity.IsAuthenticated)
+        {
+            <h3>Registro de Categorias</h3>
+            <div class=" form-group">
+                <label for=" CategoriaId">Id</label>
+                <InputNumber @bind-Value="Categoria.IdCategoria"></InputNumber>
+                <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+                <ValidationMessage For="@(() => Categoria.IdCategoria)" />
 
-<EditForm Model="@Categoria" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-
-
-    <div class=" form-group">
-        <label for=" CategoriaId">Id</label>
-        <InputNumber @bind-Value="Categoria.IdCategoria"></InputNumber>
-        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-        <ValidationMessage For="@(()=>Categoria.IdCategoria)" />
-
-    </div>
-    <div class="form-group">
-        <label for=" Descripcion">Descripcion</label>
-        <InputText @bind-Value="Categoria.Nombre" class="form-group" />
-        <ValidationMessage For="@(()=>Categoria.Nombre)" />
-    </div>
-   
-
-    <div class="form-group">
-
-        <button type="submit" class="btn btn-primary"> Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-    </div>
-
-    <h5>@mensaje</h5>
+            </div>
+            <div class="form-group">
+                <label for=" Descripcion">Descripcion</label>
+                <InputText @bind-Value="Categoria.Nombre" class="form-group" />
+                <ValidationMessage For="@(() => Categoria.Nombre)" />
+            </div>
 
 
+            <div class="form-group">
+
+                <button type="submit" class="btn btn-primary"> Guardar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+            </div>
+
+            <h5>@mensaje</h5>
 
 
-</EditForm>
+        }
+        else
+        {
+            <h1>No esta registrado</h1>
+            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+        }
+
+    </EditForm>
 
 @code {
     [Parameter]
@@ -74,12 +80,12 @@
         if (controllersCategoria.Guardar(Categoria))
         {
             Limpiar();
-            mensaje="Categoría guardada correctamente ,Exito";
+            mensaje = "Categoría guardada correctamente ,Exito";
 
         }
         else
         {
-            mensaje="Error al guardar Categoría, Fallo";
+            mensaje = "Error al guardar Categoría, Fallo";
 
         }
     }
@@ -92,13 +98,13 @@
         {
             Limpiar();
             Categoria = CategoriaTemporal;
-            mensaje="Categoría encontrado., Exito";
+            mensaje = "Categoría encontrado., Exito";
 
         }
         else
         {
             Limpiar();
-            mensaje="La Categoría no fue encontrado., Fallo";
+            mensaje = "La Categoría no fue encontrado., Fallo";
 
         }
     }
@@ -112,16 +118,16 @@
             if (controllersCategoria.Eliminar(Categoria.IdCategoria))
             {
                 Limpiar();
-                mensaje="Categoría eliminado correctamente., Exito";
+                mensaje = "Categoría eliminado correctamente., Exito";
             }
             else
             {
-                mensaje="Error al eliminar la Categoría., Fallo";
+                mensaje = "Error al eliminar la Categoría., Fallo";
             }
         }
         else
         {
-            mensaje="Error al eliminar la Categoría., Fallo";
+            mensaje = "Error al eliminar la Categoría., Fallo";
         }
     }
 
@@ -134,7 +140,7 @@
 
         if (Listado.Count == 1)
         {
-            if(Categoria.IdCategoria == 0)
+            if (Categoria.IdCategoria == 0)
                 return paso = true;
 
             Categorias CategoriaTemporal = new Categorias();

@@ -1,95 +1,100 @@
 ﻿@page  "/ReTrabajos"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
-
-<h3>ReTrabajos</h3>
-
-<EditForm Model="@trabajos" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-   
-    <div class=" form-group">
-        <label for=" RegistroId">Id</label>
-        <InputNumber @bind-Value="trabajos.IdTrabajo"></InputNumber>
-        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-        <ValidationMessage For="@(()=>trabajos.IdTrabajo)" />
-
-    </div>
-    <div class="form-group">
-        <label for=" Descripcion">Descripcion</label>
-        <InputText @bind-Value="trabajos.Descripcion" class="form-group" />
-        <ValidationMessage For="@(()=>trabajos.Descripcion)" />
-    </div>
-    <div class="form-group">
-        <label for=" Problema">Problema</label>
-        <InputNumber @bind-Value="trabajos.CantidadHojas" @oninput="Calcular" @onfocus="Calcular" @onfocusout="Calcular" class="form-group" />
-        <ValidationMessage For="@(()=>trabajos.CantidadHojas)" />
-    </div>
-    <div class="form-group">
-        <label for=" Solucion">Solucion</label>
-        <InputNumber @bind-Value="trabajos.Total"  disabled   class="form-group " />
-        <ValidationMessage For="@(()=>trabajos.Total)" />
-    </div>
-    <div class="form-group">
-        <label for=" Solucion">Solucion</label>
-        <InputDate @bind-Value="trabajos.Fecha" class="form-group" />
-        <ValidationMessage For="@(()=>trabajos.Fecha)" />
-    </div>
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 
+    <EditForm Model="@trabajos" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+      .Result.User.Identity.IsAuthenticated)
+        {
+            <h3>Registro de Trabajos</h3>
+            <div class=" form-group">
+                <label for=" RegistroId">Id</label>
+                <InputNumber @bind-Value="trabajos.IdTrabajo"></InputNumber>
+                <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+                <ValidationMessage For="@(() => trabajos.IdTrabajo)" />
 
-
-    <button type="button" class="btn btn-outline-info" @onclick="Agregar">Agregar</button>
-
-    <br />
-
-    <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Trabajo Id</th>
-                    <th>Decripcion</th>
-                    <th>Cantidad de Hojas</th>
-                    <th>Total</th>
-                   
-                    
-
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in trabajos.Detalles)
-                {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.IdTrabajo</td>
-                    <th>@item.Descripcion</th>
-                    <td>@item.CantidadHojas</td>
-                    <th>@item.Total</th>
-                    
-                   
-
-
-
-                </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <div class="form-group">
-
-        <button type="submit" class="btn btn-primary"> Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-    </div>
-
-    <h5>@Mensaje</h5>
+            </div>
+            <div class="form-group">
+                <label for=" Descripcion">Descripcion</label>
+                <InputText @bind-Value="trabajos.Descripcion" class="form-group" />
+                <ValidationMessage For="@(() => trabajos.Descripcion)" />
+            </div>
+            <div class="form-group">
+                <label for=" CantidadHojas">Cantidad de Hojas</label>
+                <InputNumber @bind-Value="trabajos.CantidadHojas" @oninput="Calcular" @onfocus="Calcular" @onfocusout="Calcular" class="form-group" />
+                <ValidationMessage For="@(() => trabajos.CantidadHojas)" />
+            </div>
+            <div class="form-group">
+                <label for=" Total">Total</label>
+                <InputNumber @bind-Value="trabajos.Total" disabled class="form-group " />
+                <ValidationMessage For="@(() => trabajos.Total)" />
+            </div>
+            <div class="form-group">
+                <label for=" Fecha">Fecha</label>
+                <InputDate @bind-Value="trabajos.Fecha" class="form-group" />
+                <ValidationMessage For="@(() => trabajos.Fecha)" />
+            </div>
 
 
 
-</EditForm>
+
+
+            <button type="button" class="btn btn-outline-info" @onclick="Agregar">Agregar</button>
+
+            <br />
+
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Trabajo Id</th>
+                            <th>Decripcion</th>
+                            <th>Cantidad de Hojas</th>
+                            <th>Total</th>
+
+
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in trabajos.Detalles)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.IdTrabajo</td>
+                                <th>@item.Descripcion</th>
+                                <td>@item.CantidadHojas</td>
+                                <th>@item.Total</th>
+
+
+
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+
+                <button type="submit" class="btn btn-primary"> Guardar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+            </div>
+
+            <h5>@Mensaje</h5>
+
+        }
+        <h1>No se ha Registrado</h1>
+
+        </EditForm>
 
 
 
@@ -113,7 +118,7 @@
 
                 CantidadHojas = trabajos.CantidadHojas,
 
-                Total=trabajos.CantidadHojas*10,
+                Total = trabajos.CantidadHojas * 10,
                 Descripcion = trabajos.Descripcion,
 
             });
@@ -176,7 +181,7 @@
     }
     public void Buscar()
     {
-        ControllersTrabajo controllersTrabajo = new ControllersTrabajo();;
+        ControllersTrabajo controllersTrabajo = new ControllersTrabajo(); ;
 
         var trabajo = controllersTrabajo.Buscar(trabajos.IdTrabajo);
         if (trabajo != null)

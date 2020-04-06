@@ -60,6 +60,28 @@ namespace ProyectoFinalAp2.Controllers
             return paso;
         }
 
+
+        public static bool InicioSesion(string Usuario, string psw)
+        {
+            
+                bool paso = false;
+                Contexto db = new Contexto();
+
+                try
+                {
+
+                    paso = db.usuarios.Any(A => A.Usuario.Equals(Usuario) && A.Contrasena.Equals(psw) );
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+                return paso;
+
+            }
+
         private bool Modificar(Usuarios usuarios)
         {
             Contexto contexto = new Contexto();

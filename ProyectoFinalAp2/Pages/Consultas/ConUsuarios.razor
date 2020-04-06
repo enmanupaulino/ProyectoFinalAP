@@ -2,129 +2,127 @@
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Data
 @using ProyectoFinalAp2.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<h3>cUsuarios</h3>
-<EditForm Model="Listado">
-    <center>
-        <h1>Consulta de Usuarios</h1>
-    </center>
+    <EditForm Model="Listado">
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+         .Result.User.Identity.IsAuthenticated)
+        {
 
-    <form>
-        <br />
+            <h1>Consulta de Usuarios</h1>
 
-        <div class="form-row">
+            <form>
 
-        
-
-         
-            <div class="form-inline ">
-                <label for="Filtro">Filtro: </label>
-                <select class="form-control    " @bind="Filtro">
-                    <option value="0">Todo</option>
-                    <option value="1">Codigo</option>
-                    <option value="2">Nombre</option>
-                    <option value="3">Apellido</option>
-                    <option value="4">Nivel de usuario</option>
-                    <option value="5">Usuario</option>
-                </select>
-            </div>
-
-   
-            <div class="form-inline ">
-                <label for="Criterio" class="LabelConsulta     ">Criterio: </label>
-                <InputText @bind-Value="@Criterio" class="form-control     " placeholder="Criterio" />
-                <p class="validation-message"> @Mensaje </p>
-            </div>
-
-        
-
-            <br />
-
-     
-            <div class="DivConsulta text-center    ">
-                <input class="ml-1" type="checkbox" @bind-value="FiltrarFecha" style="margin-top:15px">&nbsp;&nbsp;Filtrar por Fecha
-            </div>
+                <div class="form-row">
 
 
-    
-            <div class="form-inline DivConsulta ">
-                <label for="Desde" class="LabelConsulta    ">Desde: </label>
-                <InputDate @bind-Value="@Desde" class="form-control  " />
-            </div>
+                    <div class="form-inline ">
+                        <label for="Filtro">Filtro: </label>
+                        <select class="form-control    " @bind="Filtro">
+                            <option value="0">Todo</option>
+                            <option value="1">Codigo</option>
+                            <option value="2">Nombre</option>
+                            <option value="3">Apellido</option>
+                            <option value="4">Nivel de usuario</option>
+                            <option value="5">Usuario</option>
+                        </select>
+                    </div>
 
-            <!-- Fecha Hasta-->
-            <div class="form-inline DivConsulta ">
-                <label for="Hasta" class="LabelConsulta     ">Hasta: </label>
-                <InputDate @bind-Value="@Hasta" class="form-control     " />
-            </div>
 
-            <!-- Boton Buscar-->
-            <div class="DivConsulta text-center         ">
-                <button type="button" class="btn btn-primary" @onclick="Buscar">@*<span class="oi oi-magnifying-glass" />*@ Buscar</button>
-            </div>
+                    <div class="form-inline ">
+                        <label for="Criterio" class="LabelConsulta     ">Criterio: </label>
+                        <InputText @bind-Value="@Criterio" class="form-control     " placeholder="Criterio" />
+                        <p class="validation-message"> @Mensaje </p>
+                    </div>
 
-          
-            <table class="table" style="margin-top: 20px">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th>Nivel de Usuario</th>
-                        <th>Usuario</th>
-                        <th>Fecha</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ListadoPaginado.Count == 0)
-                    {
-                        <tr>
-                            <th colspan="12" style="color:black; text-align: center">"No hay datos"</th>
-                        </tr>
-                    }
-                    else
-                    {
 
-                        @foreach (var item in ListadoPaginado)
-                        {
+
+                    <div class="DivConsulta text-center    ">
+                        <input class="ml-1" type="checkbox" @bind-value="FiltrarFecha" style="margin-top:15px">&nbsp;&nbsp;Filtrar por Fecha
+                    </div>
+
+
+                    <div class="form-inline DivConsulta ">
+                        <label for="Desde" class="LabelConsulta    ">Desde: </label>
+                        <InputDate @bind-Value="@Desde" class="form-control  " />
+                    </div>
+
+
+                    <div class="form-inline DivConsulta ">
+                        <label for="Hasta" class="LabelConsulta     ">Hasta: </label>
+                        <InputDate @bind-Value="@Hasta" class="form-control     " />
+                    </div>
+
+
+                    <div class="DivConsulta text-center         ">
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">@*<span class="oi oi-magnifying-glass" />*@ Buscar</button>
+                    </div>
+
+
+                    <table class="table" style="margin-top: 20px">
+                        <thead class="thead-light">
                             <tr>
-                                <th>@item.IdUsuario</th>
-                                <th>@item.Nombres &nbsp; @item.Apellidos</th>
-                                <th>@item.NivelUsuario</th>
-                                <th>@item.Usuario</th>
-                                <th>@item.FechaIngreso.ToString("dd/MM/yyyy")</th>
-                                <td><a class="btn btn-light" href="rUsuarios/@item.IdUsuario">Ver</a></td>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th>Nivel de Usuario</th>
+                                <th>Usuario</th>
+                                <th>Fecha</th>
+                                <th></th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            @if (ListadoPaginado.Count == 0)
+                            {
+                                <tr>
+                                    <th colspan="12" style="color:black; text-align: center">"No hay datos"</th>
+                                </tr>
+                            }
+                            else
+                            {
+
+                                @foreach (var item in ListadoPaginado)
+                                {
+                                    <tr>
+                                        <th>@item.IdUsuario</th>
+                                        <th>@item.Nombres &nbsp; @item.Apellidos</th>
+                                        <th>@item.NivelUsuario</th>
+                                        <th>@item.Usuario</th>
+                                        <th>@item.FechaIngreso.ToString("dd/MM/yyyy")</th>
+                                        <td><a class="btn btn-light" href="rUsuarios/@item.IdUsuario">Ver</a></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+            <div class="form-row col-12 justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip-backward"></span>
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class="page-item disabled"><a class="page-link">@i</a></li>
                         }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </form>
 
-    <div class="form-row col-12 justify-content-center">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" @onclick="PaginaAnterior">
-                        <span class="oi oi-media-skip-backward"></span>
-                    </a>
-                </li>
-
-                @for (int i = 1; i <= Paginas; i++)
-                {
-                    <li class="page-item disabled"><a class="page-link">@i</a></li>
-                }
-
-                <li class="page-item">
-                    <a class="page-link" @onclick="PaginaSiguiente">
-                        <span class="oi oi-media-skip-forward"></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</EditForm>
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip-forward"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+        <h1>No se ha registrado</h1>
+        <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+    </EditForm>
 
 @code {
     public ControllersUsuarios controllersUsuarios = new ControllersUsuarios();

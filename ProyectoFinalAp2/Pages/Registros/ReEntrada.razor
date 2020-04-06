@@ -1,22 +1,17 @@
 ﻿@page "/ReEntrada"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-<h3>ReEntrada</h3>
 
 <EditForm Model="Entrada" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+       .Result.User.Identity.IsAuthenticated)
+    {
 
-    <center>
         <h1>Entrada de Productos</h1>
-    </center>
-
-   
-
-
-
-
 
         <div class="form-group    ">
             <label for="EntradaId " class="col-auto">Código</label>
@@ -45,16 +40,19 @@
                 <InputSelect @bind-Value="@ProductoSeleccionado" class="form-control" @onchange="CargarProducto" @onclick="CargarProducto">
                     <option value="0" disabled selected>Seleccione un Producto</option>
                     @if (ListadoProductos.Count == 0)
-                    {
-                        <option value="" disabled>No hay Producto Registrado</option>
-                    }
-                    else
-                    {
-                        @foreach (var item in ListadoProductos)
                         {
-                            <option value="@item.IdProducto">@item.Descripcion</option>
+                        <option value="" disabled>No hay Producto Registrado</option>
                         }
-                    }
+                        else
+                        {
+                        @foreach (var item in ListadoProductos)
+                            {
+                            <option value="@item.IdProducto">@item.Descripcion</option>
+                            }
+                        /**/
+                        /**/
+                        }
+                    /**/
                 </InputSelect>
             </div>
         </div>
@@ -97,22 +95,23 @@
             </table>
 
         </div>
-        
 
 
 
 
-   
-    <div class="form-group">
-
-        <button type="submit" class="btn btn-primary"> Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-    </div>
-
-    <h5>@Mensaje</h5>
 
 
+        <div class="form-group">
+
+            <button type="submit" class="btn btn-primary"> Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+        </div>
+
+        <h5>@Mensaje</h5>
+
+    }
+    <h1>No se ha Registrado</h1>
 </EditForm>
 
 
@@ -163,12 +162,12 @@
             if (controllersEntrada.Guardar(Entrada))
             {
                 Limpiar();
-                Mensaje="Entrada guardada correctamente";
+                Mensaje = "Entrada guardada correctamente";
 
             }
             else
             {
-                Mensaje="Error al guardar la entrada";
+                Mensaje = "Error al guardar la entrada";
             }
         }
     }
@@ -181,13 +180,13 @@
         {
             Limpiar();
             Entrada = entrada;
-            Mensaje="Entrada encontrada.";
+            Mensaje = "Entrada encontrada.";
 
         }
         else
         {
             Limpiar();
-            Mensaje="La entrada no fue encontrada.";
+            Mensaje = "La entrada no fue encontrada.";
 
         }
     }
@@ -201,11 +200,11 @@
             if (controllersEntrada.Eliminar(Entrada.IdEntrada))
             {
                 Limpiar();
-               Mensaje="Entrada eliminada correctamente.";
+                Mensaje = "Entrada eliminada correctamente.";
             }
             else
             {
-                Mensaje="Error al eliminar la entrada.";
+                Mensaje = "Error al eliminar la entrada.";
             }
         }
     }
@@ -233,21 +232,21 @@
 
         if (ProductoSeleccionado == "0")
         {
-            Mensaje="Debe seleccionar un Producto!";
+            Mensaje = "Debe seleccionar un Producto!";
         }
         else
         {
             if (Entrada.Detalle.Any(i => i.IdProducto == Producto.IdProducto))
             {
-              Mensaje="Este Producto ya esta agregado";
+                Mensaje = "Este Producto ya esta agregado";
             }
             else if (Cantidad <= 0)
             {
-                Mensaje="La catidad debe ser mayor a 0!";
+                Mensaje = "La catidad debe ser mayor a 0!";
             }
             else if (Cantidad >= 123456789)
             {
-              Mensaje="La catidad esta fuera del rango!";
+                Mensaje = "La catidad esta fuera del rango!";
                 return;
             }
             else

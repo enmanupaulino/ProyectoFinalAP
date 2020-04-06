@@ -1,68 +1,73 @@
 ﻿@page "/ReProveedores"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
-
-
-<h3>Component</h3>
-
-<EditForm Model="@proveedores" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-
-
-    <div class=" form-group">
-        <label for=" Proveedor Id">Id</label>
-        <InputNumber @bind-Value="proveedores.IdProveedor"></InputNumber>
-        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-        <ValidationMessage For="@(()=>proveedores.IdProveedor)" />
-
-    </div>
-    <div class="form-group">
-        <label for=" Descripcion">Descripcion</label>
-        <InputText @bind-Value="proveedores.Nombre" class="form-group" />
-        <ValidationMessage For="@(()=>proveedores.Nombre)" />
-    </div>
-
-
-    <div class="form-group">
-        <label for=" categoria">categoria</label>
-        <InputDate @bind-Value="proveedores.Fecha" class="form-group"></InputDate>
-        <ValidationMessage For="@(()=>proveedores.Fecha)" />
-    </div>
-
-    <div class="form-group">
-        <label for="Fecha">Fecha</label>
-        <InputText @bind-Value="proveedores.Telefono" class="form-group"></InputText>
-        <ValidationMessage For="@(()=>proveedores.Telefono)" />
-    </div>
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 
-    <div class="form-group">
-        <label for="Dispobible">Disponible</label>
-        <InputText @bind-Value="proveedores.Direccion" class="form-group" />
-        <ValidationMessage For="@(()=>proveedores.Direccion)" />
-    </div>
-  
-  
+    <EditForm Model="@proveedores" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+       .Result.User.Identity.IsAuthenticated)
+        {
+            <h3>Registro de Proveedores</h3>
 
-    <div class="form-group">
+            <div class=" form-group">
+                <label for=" Proveedor Id">Id</label>
+                <InputNumber @bind-Value="proveedores.IdProveedor"></InputNumber>
+                <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+                <ValidationMessage For="@(()=>proveedores.IdProveedor)" />
 
-        <button type="submit" class="btn btn-primary"> Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-    </div>
-
-    <h5>@mensaje</h5>
-
-</EditForm>
+            </div>
+            <div class="form-group">
+                <label for=" Descripcion">Descripcion</label>
+                <InputText @bind-Value="proveedores.Nombre" class="form-group" />
+                <ValidationMessage For="@(()=>proveedores.Nombre)" />
+            </div>
 
 
-    @code {
-       [Parameter]
+            <div class="form-group">
+                <label for=" Fecha">Fecha</label>
+                <InputDate @bind-Value="proveedores.Fecha" class="form-group"></InputDate>
+                <ValidationMessage For="@(()=>proveedores.Fecha)" />
+            </div>
+
+            <div class="form-group">
+                <label for="Telefono">Telefono</label>
+                <InputText @bind-Value="proveedores.Telefono" class="form-group"></InputText>
+                <ValidationMessage For="@(()=>proveedores.Telefono)" />
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="Direccion">Direccion</label>
+                <InputText @bind-Value="proveedores.Direccion" class="form-group" />
+                <ValidationMessage For="@(()=>proveedores.Direccion)" />
+            </div>
+
+
+
+            <div class="form-group">
+
+                <button type="submit" class="btn btn-primary"> Guardar</button>
+                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+            </div>
+
+            <h5>@mensaje</h5>
+        }
+        <h1>No se ha Registrado</h1>
+
+    </EditForm>
+
+
+@code {
+    [Parameter]
     public int ProveedorId { get; set; }
 
     ControllersProveedor controllersProveedor = new ControllersProveedor();
-        public string mensaje { get; set; }
+    public string mensaje { get; set; }
     private Proveedores proveedores { get; set; }
 
     private string MensajeNombre = string.Empty;
@@ -93,12 +98,12 @@
         if (controllersProveedor.Guardar(proveedores))
         {
             Limpiar();
-            mensaje="Proveedor guardado correctamente, Exito";
+            mensaje = "Proveedor guardado correctamente, Exito";
 
         }
         else
         {
-            mensaje="Error al guardar el proveedor, Fallo";
+            mensaje = "Error al guardar el proveedor, Fallo";
 
         }
     }
@@ -111,13 +116,13 @@
         {
             Limpiar();
             proveedores = proveedor;
-            mensaje="Proveedor encontrado.";
+            mensaje = "Proveedor encontrado.";
 
         }
         else
         {
             Limpiar();
-            mensaje="El proveedor no fue encontrado.";
+            mensaje = "El proveedor no fue encontrado.";
 
         }
     }
@@ -126,27 +131,27 @@
     {
         Proveedores proveedor = controllersProveedor.Buscar(proveedores.IdProveedor);
 
-        if (proveedor!= null)
+        if (proveedor != null)
         {
             if (controllersProveedor.Eliminar(proveedores.IdProveedor))
             {
                 Limpiar();
-                mensaje="Proveedor eliminado correctamente.";
+                mensaje = "Proveedor eliminado correctamente.";
             }
             else
             {
-               mensaje="Error al eliminar el Proveedor.";
+                mensaje = "Error al eliminar el Proveedor.";
             }
         }
         else
         {
-            mensaje="Error al eliminar el Proveedor.";
+            mensaje = "Error al eliminar el Proveedor.";
         }
     }
 
 
 
-    public bool ExisteNombre() 
+    public bool ExisteNombre()
     {
         bool paso = false;
         var Listado = new List<Proveedores>();
@@ -155,8 +160,8 @@
 
         if (Listado.Count == 1)
         {
-            if(proveedores.IdProveedor == 0)
-				return paso = true;
+            if (proveedores.IdProveedor == 0)
+                return paso = true;
 
             Proveedores proveedor = new Proveedores();
             proveedor = Listado[0];
@@ -183,6 +188,6 @@
     {
         MensajeNombre = string.Empty;
     }
-   
 
-    }
+
+}

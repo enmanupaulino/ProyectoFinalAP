@@ -1,75 +1,79 @@
 ﻿@page "/ReClientes"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<h3>rClientes</h3>
 
 <EditForm Model="@clientes" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
+    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+      .Result.User.Identity.IsAuthenticated)
+    {
+        <h3>Registro de Clientes</h3>
+
+        <div class=" form-group">
+            <label for=" Clientes Id">Id</label>
+            <InputNumber @bind-Value="clientes.IdCliente"></InputNumber>
+            <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+            <ValidationMessage For="@(() => clientes.IdCliente)" />
+
+        </div>
+        <div class="form-group">
+            <label for=" Nombre">Nombre</label>
+            <InputText @bind-Value="clientes.Nombre" class="form-group" />
+            <ValidationMessage For="@(() => clientes.Nombre)" />
+        </div>
 
 
-    <div class=" form-group">
-        <label for=" Clientes Id">Id</label>
-        <InputNumber @bind-Value="clientes.IdCliente"></InputNumber>
-        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-        <ValidationMessage For="@(()=>clientes.IdCliente)" />
+        <div class="form-group">
+            <label for=" Cedula">Cedula</label>
+            <InputText @bind-Value="clientes.Cedula" class="form-group"></InputText>
+            <ValidationMessage For="@(() => clientes.Cedula)" />
+        </div>
 
-    </div>
-    <div class="form-group">
-        <label for=" Descripcion">Descripcion</label>
-        <InputText @bind-Value="clientes.Nombre" class="form-group" />
-        <ValidationMessage For="@(()=>clientes.Nombre)" />
-    </div>
-
-
-    <div class="form-group">
-        <label for=" categoria">categoria</label>
-        <InputText @bind-Value="clientes.Cedula" class="form-group"></InputText>
-        <ValidationMessage For="@(()=>clientes.Cedula)" />
-    </div>
-
-    <div class="form-group">
-        <label for="Fecha">Fecha</label>
-        <InputText @bind-Value="clientes.Correo" class="form-group"></InputText>
-        <ValidationMessage For="@(()=>clientes.Correo)" />
-    </div>
-
-
-
-    <div class="form-group">
-        <label for="Dispobible">Disponible</label>
-        <InputDate @bind-Value="clientes.Fecha" class="form-group" />
-        <ValidationMessage For="@(()=>clientes.Fecha)" />
-    </div>
-    <div class="form-group">
-        <label for="Dispobible">Disponible</label>
-        <InputText @bind-Value="clientes.Direccion" class="form-group" />
-        <ValidationMessage For="@(()=>clientes.Direccion)" />
-    </div>
-    <div class="form-group">
-        <label for="Dispobible">Disponible</label>
-        <InputText @bind-Value="clientes.Telefono" class="form-group" />
-        <ValidationMessage For="@(()=>clientes.Telefono)" />
-    </div>
-
-    <div class="form-group">
-        <label for="Dispobible">Disponible</label>
-        <InputNumber @bind-Value="clientes.Deuda" class="form-group" />
-        <ValidationMessage For="@(()=>clientes.Deuda)" />
-    </div>
-
-
-    <div class="form-group">
-
-        <button type="submit" class="btn btn-primary"> Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-    </div>
-
-    <h5>@Mensaje</h5>
+        <div class="form-group">
+            <label for="Correo">Correo</label>
+            <InputText @bind-Value="clientes.Correo" class="form-group"></InputText>
+            <ValidationMessage For="@(() => clientes.Correo)" />
+        </div>
 
 
 
+        <div class="form-group">
+            <label for="Fecha">Fecha</label>
+            <InputDate @bind-Value="clientes.Fecha" class="form-group" />
+            <ValidationMessage For="@(() => clientes.Fecha)" />
+        </div>
+        <div class="form-group">
+            <label for="Direccion">Direccion</label>
+            <InputText @bind-Value="clientes.Direccion" class="form-group" />
+            <ValidationMessage For="@(() => clientes.Direccion)" />
+        </div>
+        <div class="form-group">
+            <label for="Telefono">Telefono</label>
+            <InputText @bind-Value="clientes.Telefono" class="form-group" />
+            <ValidationMessage For="@(() => clientes.Telefono)" />
+        </div>
+
+        <div class="form-group">
+            <label for="Deuda">Deuda</label>
+            <InputNumber @bind-Value="clientes.Deuda" class="form-group" />
+            <ValidationMessage For="@(() => clientes.Deuda)" />
+        </div>
+
+
+        <div class="form-group">
+
+            <button type="submit" class="btn btn-primary"> Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+        </div>
+
+        <h5>@Mensaje</h5>
+
+
+    }
+    <h1>No esta Registrado</h1>
 
 </EditForm>
 
@@ -81,7 +85,7 @@
 
     public void Guardar()
     {
-        ControllersClientes controllersClientes= new ControllersClientes();
+        ControllersClientes controllersClientes = new ControllersClientes();
         // Calcular();
         /* if (categorias.Tomado > c.Limite)
          {

@@ -2,100 +2,104 @@
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
 @using ProyectoFinalAp2.Data
-
-<h3>cCategorias</h3>
-
-<EditForm Model="Listado">
-    <center>
-        <h1>Consulta de Categorias</h1>
-    </center>
-
-    <form>
-     
-
-        <div class="form-row">
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
-    
-            <div class="form-inline DivConsulta ">
-                <label for="Filtro" class="LabelConsulta  ">Filtro: </label>
-                <select class="form-control     " @bind="Filtro">
-                    <option value="0">Todo</option>
-                    <option value="1">Id</option>
-                    <option value="2">Nombre</option>
-                </select>
-            </div>
+    <EditForm Model="Listado">
 
-      
-            <div class="form-inline D">
-                <label for="Criterio" class="LabelConsulta  ">Criterio: </label>
-                <InputText @bind-Value="@Criterio" class="form-control     " placeholder="Criterio" />
-                <p class="validation-message"> @Mensaje </p>
-            </div>
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+         .Result.User.Identity.IsAuthenticated)
+        {
+            <h1>Consulta de Categorias</h1>
+
+            <form>
 
 
-          
-            <div class="DivConsulta text-center  ">
-                <button type="button" class="btn btn-primary" @onclick="Buscar">@*<span class="oi oi-magnifying-glass" /> *@Buscar</button>
-            </div>
+                <div class="form-row">
 
-        
 
-            <table class="table" style="margin-top: 20px">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (ListadoPaginado.Count == 0)
-                    {
-                        <tr>
-                            <th colspan="12" style="color:black; text-align:">"No hay datos "</th>
-                        </tr>
-                    }
-                    else
-                    {
+                    <div class="form-inline DivConsulta ">
+                        <label for="Filtro" class="LabelConsulta  ">Filtro: </label>
+                        <select class="form-control     " @bind="Filtro">
+                            <option value="0">Todo</option>
+                            <option value="1">Id</option>
+                            <option value="2">Nombre</option>
+                        </select>
+                    </div>
 
-                        @foreach (var item in ListadoPaginado)
-                        {
+
+                    <div class="form-inline D">
+                        <label for="Criterio" class="LabelConsulta  ">Criterio: </label>
+                        <InputText @bind-Value="@Criterio" class="form-control     " placeholder="Criterio" />
+                        <p class="validation-message"> @Mensaje </p>
+                    </div>
+
+
+
+                    <div class="DivConsulta text-center  ">
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">@*<span class="oi oi-magnifying-glass" /> *@Buscar</button>
+                    </div>
+
+
+
+                    <table class="table" style="margin-top: 20px">
+                        <thead class="thead-light">
                             <tr>
-                                <th>@item.IdCategoria</th>
-                                <th>@item.Nombre</th>
-                                <th><a class="btn btn-light" href="rCategorias/@item.IdCategoria">Ver</a></th>
+                                <th>Codigo</th>
+                                <th>Nombre</th>
+                                <th></th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            @if (ListadoPaginado.Count == 0)
+                            {
+                                <tr>
+                                    <th colspan="12" style="color:black; text-align:">"No hay datos "</th>
+                                </tr>
+                            }
+                            else
+                            {
+
+                                @foreach (var item in ListadoPaginado)
+                                {
+                                    <tr>
+                                        <th>@item.IdCategoria</th>
+                                        <th>@item.Nombre</th>
+                                        <th><a class="btn btn-light" href="rCategorias/@item.IdCategoria">Ver</a></th>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+            <div class="form-row  ">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip-backward"></span>
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class="page-item disabled"><a class="page-link">@i</a></li>
                         }
-                    }
-                </tbody>
-            </table>
-        </div>
-    </form>
 
-    <div class="form-row  ">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" @onclick="PaginaAnterior">
-                        <span class="oi oi-media-skip-backward"></span>
-                    </a>
-                </li>
-
-                @for (int i = 1; i <= Paginas; i++)
-                {
-                    <li class="page-item disabled"><a class="page-link">@i</a></li>
-                }
-
-                <li class="page-item">
-                    <a class="page-link" @onclick="PaginaSiguiente">
-                        <span class="oi oi-media-skip-forward"></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</EditForm>
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip-forward"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+        <h1>No se ha registrado</h1>
+        <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+    </EditForm>
 
 @code {
 
