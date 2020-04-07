@@ -65,7 +65,7 @@
                                     <tr>
                                         <th>@item.IdCategoria</th>
                                         <th>@item.Nombre</th>
-                                        <th><a class="btn btn-light" href="rCategorias/@item.IdCategoria">Ver</a></th>
+                                        <th><a class="btn btn-light" href="ReCategorias/@item.IdCategoria">Ver</a></th>
                                     </tr>
                                 }
                             }
@@ -74,12 +74,12 @@
                 </div>
             </form>
 
-            <div class="form-row  ">
+            <div class="form-row col-12 justify-content-center ">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item">
                             <a class="page-link" @onclick="PaginaAnterior">
-                                <span class="oi oi-media-skip-backward"></span>
+                                <span class="oi oi-media-skip">Anterior</span>
                             </a>
                         </li>
 
@@ -90,7 +90,7 @@
 
                         <li class="page-item">
                             <a class="page-link" @onclick="PaginaSiguiente">
-                                <span class="oi oi-media-skip-forward"></span>
+                                <span class="oi oi-media-skip"> Siguiente</span>
                             </a>
                         </li>
                     </ul>

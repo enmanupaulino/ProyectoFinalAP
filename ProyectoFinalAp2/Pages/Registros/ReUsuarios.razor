@@ -1,4 +1,5 @@
 ﻿@page "/ReUsuarios"
+@page "/ReUsuarios/{UsuarioId:int}"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
 
@@ -116,7 +117,7 @@
 
     <h5>@mensaje</h5>
 
-   
+
 </EditForm>
 
 
@@ -134,8 +135,8 @@
     private string ConfirmarContrasena = string.Empty;
 
     private string MensajeEmail = string.Empty;
-    private string MensajeUsuario =string.Empty;
-    private string MensajeContrasena =string.Empty;
+    private string MensajeUsuario = string.Empty;
+    private string MensajeContrasena = string.Empty;
     public string mensaje { get; set; }
 
     protected override void OnInitialized()
@@ -182,12 +183,12 @@
         if (controllersUsuarios.Guardar(Usuario))
         {
             Limpiar();
-            mensaje="Usuario guardado correctamente";
+            mensaje = "Usuario guardado correctamente";
 
         }
         else
         {
-            mensaje="Error al guardar el usuario";
+            mensaje = "Error al guardar el usuario";
         }
     }
 
@@ -200,13 +201,13 @@
             Limpiar();
             Usuario = usuario;
             NivelSeleccionado = Usuario.NivelUsuario;
-            mensaje="Usuario encontrado.";
+            mensaje = "Usuario encontrado.";
 
         }
         else
         {
             Limpiar();
-           mensaje="El usuario no fue encontrado.";
+            mensaje = "El usuario no fue encontrado.";
 
         }
     }
@@ -220,22 +221,22 @@
             if (controllersUsuarios.Eliminar(Usuario.IdUsuario))
             {
                 Limpiar();
-               mensaje="Usuario eliminado correctamente.";
+                mensaje = "Usuario eliminado correctamente.";
             }
             else
             {
-                mensaje="Error al eliminar el Usuario.";
+                mensaje = "Error al eliminar el Usuario.";
             }
         }
         else
         {
-            mensaje="Error al eliminar el Usuario.";
+            mensaje = "Error al eliminar el Usuario.";
         }
     }
 
-    
 
-    public bool ExisteUsuario() 
+
+    public bool ExisteUsuario()
     {
         bool paso = false;
         var Listado = new List<Usuarios>();
@@ -244,7 +245,7 @@
 
         if (Listado.Count == 1)
         {
-            if(Usuario.IdUsuario== 0)
+            if (Usuario.IdUsuario == 0)
                 return paso = true;
 
             Usuarios UsuarioTemporal = new Usuarios();
@@ -274,9 +275,9 @@
     {
         MensajeEmail = string.Empty;
         MensajeUsuario = string.Empty;
-        MensajeContrasena =string.Empty;
+        MensajeContrasena = string.Empty;
     }
-public bool ExisteEmail() 
+    public bool ExisteEmail()
     {
         bool paso = false;
         var Listado = new List<Usuarios>();
@@ -285,7 +286,7 @@ public bool ExisteEmail()
 
         if (Listado.Count == 1)
         {
-            if(Usuario.IdUsuario== 0)
+            if (Usuario.IdUsuario == 0)
                 return paso = true;
 
             Usuarios UsuarioTemporal = new Usuarios();

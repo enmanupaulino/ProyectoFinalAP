@@ -1,123 +1,125 @@
 ﻿@page "/ReEntrada"
+@page "/ReEntrada/{EntradaId:int}"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 
-    <EditForm Model="Entrada" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-          .Result.User.Identity.IsAuthenticated)
-        {
+<EditForm Model="Entrada" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+     .Result.User.Identity.IsAuthenticated)
+    {
 
-            <h1>Entrada de Productos</h1>
+        <h1>Entrada de Productos</h1>
 
-            <div class="form-group    ">
-                <label for="EntradaId " class="col-auto">Código</label>
+        <div class="form-group    ">
+            <label for="EntradaId " class="col-auto">Código</label>
 
-                <InputNumber @bind-Value="@Entrada.IdEntrada" class="form-control" />
-                <div class="input-group-append">
-                    <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
-                </div>
-
+            <InputNumber @bind-Value="@Entrada.IdEntrada" class="form-control" />
+            <div class="input-group-append">
+                <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
             </div>
 
+        </div>
 
 
 
-            <div class="form-group">
-                <label for="FechaIngreso">Fecha</label>
-                <InputDate @bind-Value="@Entrada.Fecha" class="form-control" />
-            </div>
+
+        <div class="form-group">
+            <label for="FechaIngreso">Fecha</label>
+            <InputDate @bind-Value="@Entrada.Fecha" class="form-control" />
+        </div>
 
 
 
-            <div class="form-group ">
-                <label for="producto" class="col-auto">Producto</label>
-                <div class="input-group ">
+        <div class="form-group ">
+            <label for="producto" class="col-auto">Producto</label>
+            <div class="input-group ">
 
-                    <InputSelect @bind-Value="@ProductoSeleccionado" class="form-control" @onchange="CargarProducto" @onclick="CargarProducto">
-                        <option value="0" disabled selected>Seleccione un Producto</option>
-                        @if (ListadoProductos.Count == 0)
+                <InputSelect @bind-Value="@ProductoSeleccionado" class="form-control" @onchange="CargarProducto" @onclick="CargarProducto">
+                    <option value="0" disabled selected>Seleccione un Producto</option>
+                    @if (ListadoProductos.Count == 0)
+                        {
+                        <option value="" disabled>No hay Producto Registrado</option>
+                        }
+                        else
+                        {
+                        @foreach (var item in ListadoProductos)
                             {
-                            <option value="" disabled>No hay Producto Registrado</option>
-                            }
-                            else
-                            {
-                            @foreach (var item in ListadoProductos)
-                                {
-                                <option value="@item.IdProducto">@item.Descripcion</option>
-                                }
-                            /**/
-                            /**/
-                            /**/
+                            <option value="@item.IdProducto">@item.Descripcion</option>
                             }
                         /**/
-                    </InputSelect>
-                </div>
-            </div>
-
-
-
-            <div class="form-group">
-                <label class="col-auto" for="Cantidad">Cantidad</label>
-                <div class="input-group ">
-                    <InputNumber @bind-Value="@Cantidad" class="form-control"></InputNumber>
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-success" @onclick="AgregarProducto"><span class="oi oi-plus" />&nbsp;Agregar</button>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div>
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Codigo</th>
-                            <th>Descripcion</th>
-                            <th>Cantidad</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Entrada.Detalle)
-                        {
-                            <tr>
-                                <th>@item.IdProducto</th>
-                                <th>@item.Descripcion</th>
-                                <th>@item.Cantidad</th>
-                                <th><button type="button" class="btn btn-outline-danger btn-sm" @onclick="(()=> EliminarProducto(item))">Eliminar</button></th>
-                            </tr>
+                        /**/
+                        /**/
+                        /**/
                         }
-                    </tbody>
-                </table>
-
+                    /**/
+                </InputSelect>
             </div>
+        </div>
 
 
 
-
-
-
-            <div class="form-group">
-
-                <button type="submit" class="btn btn-primary"> Guardar</button>
-                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-                <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+        <div class="form-group">
+            <label class="col-auto" for="Cantidad">Cantidad</label>
+            <div class="input-group ">
+                <InputNumber @bind-Value="@Cantidad" class="form-control"></InputNumber>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-success" @onclick="AgregarProducto"><span class="oi oi-plus" />&nbsp;Agregar</button>
+                </div>
             </div>
+        </div>
 
-            <h5>@Mensaje</h5>
 
-        }
-        else
-        {
-            <h1>No esta registrado</h1>
-            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
-        }
-    </EditForm>
+
+        <div>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Descripcion</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Entrada.Detalle)
+                    {
+                        <tr>
+                            <th>@item.IdProducto</th>
+                            <th>@item.Descripcion</th>
+                            <th>@item.Cantidad</th>
+                            <th><button type="button" class="btn btn-outline-danger btn-sm" @onclick="(()=> EliminarProducto(item))">Eliminar</button></th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+
+
+
+        <div class="form-group">
+
+            <button type="submit" class="btn btn-primary"> Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+        </div>
+
+        <h5>@Mensaje</h5>
+
+    }
+    else
+    {
+        <h1>No esta registrado</h1>
+        <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+    }
+</EditForm>
 
 
 

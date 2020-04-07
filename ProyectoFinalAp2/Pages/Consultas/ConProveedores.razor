@@ -91,7 +91,7 @@
                                         <th>@item.Telefono</th>
                                         <th>@item.Direccion</th>
                                         <th>@item.Fecha.ToString("dd/MM/yyyy")</th>
-                                        <th><a class="btn btn-light" href="rProveedores/@item.IdProveedor">Ver</a></th>
+                                        <th><a class="btn btn-light" href="ReProveedores/@item.IdProveedor">Ver</a></th>
                                     </tr>
                                 }
                             }
@@ -105,7 +105,7 @@
                     <ul class="pagination">
                         <li class="page-item">
                             <a class="page-link" @onclick="PaginaAnterior">
-                                <span class="oi oi-media-skip-backward"></span>
+                                <span class="oi oi-media-skip"> Anterior</span>
                             </a>
                         </li>
 
@@ -116,7 +116,7 @@
 
                         <li class="page-item">
                             <a class="page-link" @onclick="PaginaSiguiente">
-                                <span class="oi oi-media-skip-forward"></span>
+                                <span class="oi oi-media-skip"> Siguiente</span>
                             </a>
                         </li>
                     </ul>

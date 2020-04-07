@@ -1,5 +1,47 @@
 ﻿@page "/"
+@using ProyectoFinalAp2.Shared
 
-<h1>Hello, world!</h1>
+@using System.Web;
 
-Welcome to your new app.
+<AuthorizeView>
+
+    
+
+    <NotAuthorized>
+
+        <input type="text"
+               placeholder="Usuario"
+               @bind="@Username" />
+
+        &nbsp;&nbsp;
+
+        <input type="password"
+               placeholder="Contraseña"
+               @bind="@Password" />
+
+        <a class="ml-md-auto btn btn-primary"
+           href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
+           target="_top">Iniciar Sesion</a>
+
+        <a class="ml-md-auto btn btn-primary"
+           href="ReUsuarios "
+           target="_top">Registrarse</a>
+
+    </NotAuthorized>
+
+</AuthorizeView>
+@code {
+    string Username = "";
+
+    string Password = "";
+
+
+    private string encode(string param)
+
+    {
+
+        return HttpUtility.UrlEncode(param);
+
+    }
+
+}

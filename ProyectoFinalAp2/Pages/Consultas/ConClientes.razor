@@ -96,7 +96,7 @@
                                     <th>@item.Correo</th>
 
                                     <th>@item.Fecha.ToString("dd/MM/yyyy")</th>
-                                    <td><a class="btn btn-light" href="rClientes/@item.IdCliente">Ver</a></td>
+                                    <td><a class="btn btn-light" href="ReClientes/@item.IdCliente">Ver</a></td>
                                 </tr>
                             }
                         }
@@ -109,7 +109,7 @@
                     <ul class="pagination">
                         <li class="page-item">
                             <a class="page-link" @onclick="PaginaAnterior">
-                                <span class="oi oi-media-skip-backward"></span>
+                                <span class="oi oi-media-skip"> Anterior</span>
                             </a>
                         </li>
 
@@ -120,7 +120,7 @@
 
                         <li class="page-item">
                             <a class="page-link" @onclick="PaginaSiguiente">
-                                <span class="oi oi-media-skip-forward"></span>
+                                <span class="oi oi-media-skip"> Siguiente</span>
                             </a>
                         </li>
                     </ul>

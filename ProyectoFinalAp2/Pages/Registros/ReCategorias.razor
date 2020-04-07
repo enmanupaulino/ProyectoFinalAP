@@ -1,48 +1,49 @@
 ﻿@page "/ReCategorias"
+@page "/ReCategorias/{CategoriaId:int}"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 
-    <EditForm Model="@Categoria" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-       .Result.User.Identity.IsAuthenticated)
-        {
-            <h3>Registro de Categorias</h3>
-            <div class=" form-group">
-                <label for=" CategoriaId">Id</label>
-                <InputNumber @bind-Value="Categoria.IdCategoria"></InputNumber>
-                <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-                <ValidationMessage For="@(() => Categoria.IdCategoria)" />
+<EditForm Model="@Categoria" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+  .Result.User.Identity.IsAuthenticated)
+    {
+        <h3>Registro de Categorias</h3>
+        <div class=" form-group">
+            <label for=" CategoriaId">Id</label>
+            <InputNumber @bind-Value="Categoria.IdCategoria"></InputNumber>
+            <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+            <ValidationMessage For="@(() => Categoria.IdCategoria)" />
 
-            </div>
-            <div class="form-group">
-                <label for=" Descripcion">Descripcion</label>
-                <InputText @bind-Value="Categoria.Nombre" class="form-group" />
-                <ValidationMessage For="@(() => Categoria.Nombre)" />
-            </div>
-
-
-            <div class="form-group">
-
-                <button type="submit" class="btn btn-primary"> Guardar</button>
-                <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-                <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-            </div>
-
-            <h5>@mensaje</h5>
+        </div>
+        <div class="form-group">
+            <label for=" Descripcion">Descripcion</label>
+            <InputText @bind-Value="Categoria.Nombre" class="form-group" />
+            <ValidationMessage For="@(() => Categoria.Nombre)" />
+        </div>
 
 
-        }
-        else
-        {
-            <h1>No esta registrado</h1>
-            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
-        }
+        <div class="form-group">
 
-    </EditForm>
+            <button type="submit" class="btn btn-primary"> Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+        </div>
+
+        <h5>@mensaje</h5>
+
+
+    }
+    else
+    {
+        <h1>No esta registrado</h1>
+        <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+    }
+
+</EditForm>
 
 @code {
     [Parameter]
