@@ -13,7 +13,7 @@ namespace ProyectoFinalAp2.Models
         public int IdFactura { get; set; }
         public int IdCliente { get; set; }
         [Range(minimum: 1, maximum: 999999999999, ErrorMessage = "Debe seleccionar un Cliente.")]
-        public string Usuario { get; set; }
+        public string Cliente { get; set; }
         public int IdProducto { get; set; }
         //[Range(minimum:1,maximum:1000000,ErrorMessage ="El total debe se mayor a cero")]
         public decimal Total { get; set; }
@@ -28,7 +28,7 @@ namespace ProyectoFinalAp2.Models
         {
             IdFactura = 0;
             IdCliente = 0;
-            Usuario = string.Empty;
+            Cliente = string.Empty;
             IdProducto = 0;
             Total = 0;
             Fecha = DateTime.Now;

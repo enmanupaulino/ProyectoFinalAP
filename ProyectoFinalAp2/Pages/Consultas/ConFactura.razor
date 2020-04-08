@@ -1,4 +1,4 @@
-﻿@page "/ConArticulos"
+﻿@page "/ConFactura"
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Data
 @using ProyectoFinalAp2.Models
@@ -24,11 +24,9 @@
                 <select class="form-control     col-sm-8     col-md-9" @bind="Filtro">
                     <option value="0">Todo</option>
                     <option value="1">Codigo</option>
-                    <option value="2">Descripcion</option>
-                    <option value="3">Costo</option>
-                    <option value="4">Precio</option>
-                    <option value="5">Ganancia</option>
-                    <option value="6">Cantidad</option>
+                    <option value="2">Cliente</option>
+                    <option value="3">Total</option>
+                  
                 </select>
             </div>
 
@@ -73,13 +71,10 @@
                 <thead class="thead-light">
                     <tr>
                         <th>Codigo</th>
-                        <th>Descripcion</th>
+                        <th>Cliente</th>
 
-                        <th>Costo</th>
-                        <th>Precio</th>
-
-                        <th>Ganancia</th>
-                        <th>Cantidad</th>
+                        <th>Total</th>
+                       
 
                         <th>Fecha</th>
                         <th></th>
@@ -97,17 +92,15 @@
 
                         @foreach (var item in ListadoPaginado)
                         {
-                <tr>
-                    <th>@item.IdProducto</th>
+                            <tr>
+                                <th>@item.IdFactura</th>
 
-                    <th>@item.Descripcion</th>
-                    <th>@item.Costo</th>
-                    <th>@item.Precio</th>
-                    <th>@item.Ganancia</th>
-                    <th>@item.Cantidad</th>
-                    <th>@item.FechaCreacion.ToString("dd/MM/yyyy")</th>
-                    <th><a class="btn btn-light" href="ReArticulos/@item.IdProducto">Ver</a></th>
-                </tr>
+                                <th>@item.Cliente</th>
+                                <th>@item.Total</th>
+                             
+                                <th>@item.Fecha.ToString("dd/MM/yyyy")</th>
+                                <th><a class="btn btn-light" href="ReFacturacion/@item.IdFactura">Ver</a></th>
+                            </tr>
 
                         }
                     }
@@ -141,9 +134,9 @@
 </EditForm>
 
 @code {
-    public ControllersProductos controllersProductos = new ControllersProductos();
-    private List<Productos> Listado { get; set; }
-    private List<Productos> ListadoPaginado { get; set; }
+    public ControllersFacturacion controllersFacturacion = new ControllersFacturacion();
+    private List<Facturacion> Listado { get; set; }
+    private List<Facturacion> ListadoPaginado { get; set; }
 
     private string Criterio = string.Empty;
     private string Filtro = string.Empty;
@@ -162,7 +155,7 @@
 
     protected override void OnInitialized()
     {
-        Listado = controllersProductos.GetList(e => true);
+        Listado = controllersFacturacion.GetList(e => true);
         Filtro = "0";
         Desde = DateTime.Now;
         Hasta = DateTime.Now;
@@ -206,7 +199,7 @@
     {
         if (FiltrarFecha == true && Listado.Count > 0)
         {
-            Listado = Listado.Where(p => p.FechaCreacion.Date >= Desde.Date && p.FechaCreacion.Date <= Hasta.Date).ToList();
+            Listado = Listado.Where(p => p.Fecha.Date >= Desde.Date && p.Fecha.Date <= Hasta.Date).ToList();
             FiltrarFecha = false;
         }
         IniciarPaginacion();
@@ -216,7 +209,7 @@
     {
         if (Filtro == "0")
         {
-            Listado = controllersProductos.GetList(e => true);
+            Listado = controllersFacturacion.GetList(e => true);
             FiltrarPorLaFecha();
         }
         else
@@ -227,33 +220,23 @@
             }
             else
             {
-                Listado = controllersProductos.GetList(e => true);
+                Listado = controllersFacturacion.GetList(e => true);
                 switch (Filtro)
                 {
                     case "1":
-                        Listado = Listado.Where(e => e.IdProducto.ToString().Contains(Criterio.ToString())).ToList();
+                        Listado = Listado.Where(e => e.IdFactura.ToString().Contains(Criterio.ToString())).ToList();
                         Mensaje = "";
                         break;
-                         case "2":
-                        Listado = Listado.Where(e => e.Descripcion.ToString().Contains(Criterio.ToString())).ToList();
+                    case "2":
+                        
+                        Listado = Listado.Where(e => e.Cliente.ToUpper().Contains(Criterio.ToUpper())).ToList();
                         Mensaje = "";
                         break;
-                         case "3":
-                        Listado = Listado.Where(e => e.Costo.ToString().Contains(Criterio.ToString())).ToList();
+                    case "3":
+                        Listado = Listado.Where(e => e.Total.ToString().Contains(Criterio.ToString())).ToList();
                         Mensaje = "";
                         break;
-                         case "4":
-                        Listado = Listado.Where(e => e.Precio.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
-                        break;
-                         case "5":
-                        Listado = Listado.Where(e => e.Ganancia.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
-                        break;
-                         case "6":
-                        Listado = Listado.Where(e => e.Cantidad.ToString().Contains(Criterio.ToString())).ToList();
-                        Mensaje = "";
-                        break;
+                  
                 }
                 FiltrarPorLaFecha();
             }

@@ -3,75 +3,90 @@
 @using ProyectoFinalAp2.Controllers
 @using ProyectoFinalAp2.Models
 @inject AuthenticationStateProvider AuthenticationStateProvider
+ 
 
+    <style>
+        body{
+            background-color: #808080;
 
+        }
+        
+
+    </style>
 <EditForm Model="@clientes" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
-    .Result.User.Identity.IsAuthenticated)
+  .Result.User.Identity.IsAuthenticated)
     {
-        <h3>Registro de Clientes</h3>
+       
 
-        <div class=" form-group">
-            <label for=" Clientes Id">Id</label>
-            <InputNumber @bind-Value="clientes.IdCliente"></InputNumber>
-            <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-            <ValidationMessage For="@(() => clientes.IdCliente)" />
+        <div class="container">
+            <div style=" margin: 0; padding: 0; box-sizing: border-box; max-width: 800px; background-color: #2fbac8; box-shadow: 7px 13px 37px #93baea; padding: 60px; margin: auto; margin-top: 60px; border-radius: 4px; ">
+                <center>
+                    <h3>Registro de Clientes</h3>
+                </center>
 
+                <div class=" form-group">
+                    <label for=" Clientes Id"><h4 class="font-weight-bold">Id</h4></label>
+                    <InputNumber @bind-Value="clientes.IdCliente" class="form-control"></InputNumber>
+                    <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+                    <ValidationMessage For="@(() => clientes.IdCliente)" />
+
+                </div>
+                <div class="form-group">
+                    <label for=" Nombre"><h4 class="font-weight-bold">Nombre</h4></label>
+                    <InputText @bind-Value="clientes.Nombre" class="form-control" />
+                    <ValidationMessage For="@(() => clientes.Nombre)" />
+                </div>
+
+
+                <div class="form-group">
+                    <label for=" Cedula"><h4 class="font-weight-bold">Cedula</h4></label>
+                    <InputText @bind-Value="clientes.Cedula" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Cedula)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Correo"><h4 class="font-weight-bold">Correo</h4></label>
+                    <InputText @bind-Value="clientes.Correo" class="form-control"></InputText>
+                    <ValidationMessage For="@(() => clientes.Correo)" />
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="Fecha"><h4 class="font-weight-bold">Fecha</h4></label>
+                    <InputDate @bind-Value="clientes.Fecha" class="form-control" />
+                    <ValidationMessage For="@(() => clientes.Fecha)" />
+                </div>
+                <div class="form-group">
+                    <label for="Direccion"><h4 class="font-weight-bold">Direccion</h4></label>
+                    <InputText @bind-Value="clientes.Direccion" class="form-control" />
+                    <ValidationMessage For="@(() => clientes.Direccion)" />
+                </div>
+                <div class="form-group">
+                    <label for="Telefono"><h4 class="font-weight-bold">Telefono</h4></label>
+                    <InputText @bind-Value="clientes.Telefono" class="form-control" />
+                    <ValidationMessage For="@(() => clientes.Telefono)" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Deuda"><h4 class="font-weight-bold">Deuda</h4></label>
+                    <InputNumber @bind-Value="clientes.Deuda" class="form-control" />
+                    <ValidationMessage For="@(() => clientes.Deuda)" />
+                </div>
+
+
+                <div class="form-group">
+
+                    <button type="submit" class="btn btn-primary"> Guardar</button>
+                    <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                    <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+                </div>
+
+                <h5>@Mensaje</h5>
+            </div>
         </div>
-        <div class="form-group">
-            <label for=" Nombre">Nombre</label>
-            <InputText @bind-Value="clientes.Nombre" class="form-group" />
-            <ValidationMessage For="@(() => clientes.Nombre)" />
-        </div>
-
-
-        <div class="form-group">
-            <label for=" Cedula">Cedula</label>
-            <InputText @bind-Value="clientes.Cedula" class="form-group"></InputText>
-            <ValidationMessage For="@(() => clientes.Cedula)" />
-        </div>
-
-        <div class="form-group">
-            <label for="Correo">Correo</label>
-            <InputText @bind-Value="clientes.Correo" class="form-group"></InputText>
-            <ValidationMessage For="@(() => clientes.Correo)" />
-        </div>
-
-
-
-        <div class="form-group">
-            <label for="Fecha">Fecha</label>
-            <InputDate @bind-Value="clientes.Fecha" class="form-group" />
-            <ValidationMessage For="@(() => clientes.Fecha)" />
-        </div>
-        <div class="form-group">
-            <label for="Direccion">Direccion</label>
-            <InputText @bind-Value="clientes.Direccion" class="form-group" />
-            <ValidationMessage For="@(() => clientes.Direccion)" />
-        </div>
-        <div class="form-group">
-            <label for="Telefono">Telefono</label>
-            <InputText @bind-Value="clientes.Telefono" class="form-group" />
-            <ValidationMessage For="@(() => clientes.Telefono)" />
-        </div>
-
-        <div class="form-group">
-            <label for="Deuda">Deuda</label>
-            <InputNumber @bind-Value="clientes.Deuda" class="form-group" />
-            <ValidationMessage For="@(() => clientes.Deuda)" />
-        </div>
-
-
-        <div class="form-group">
-
-            <button type="submit" class="btn btn-primary"> Guardar</button>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-        </div>
-
-        <h5>@Mensaje</h5>
-
 
     }
     else
@@ -132,7 +147,7 @@
         var cliente = controllersClientes.Buscar(clientes.IdCliente);
         if (cliente != null)
         {
-            cliente = clientes;
+            clientes = cliente;
             Mensaje = "Cliente Encontrado, Exito";
         }
         else

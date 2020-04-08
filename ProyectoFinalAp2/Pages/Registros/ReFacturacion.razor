@@ -13,9 +13,23 @@
     @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
   .Result.User.Identity.IsAuthenticated)
     {
+    
+       <div class="container">
+        <div style="        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 800px;
+        background-color:  #93baea;
+        box-shadow: 7px 13px 37px #93baea;
+        padding: 60px;
+        margin: auto;
+        margin-top: 60px;
+        border-radius: 4px;
+    ">
 
-        <h1> Registro de Factura </h1>
-
+            <center>
+    <h1> Registro de Factura </h1>
+            </center>
 
 
         <div class="form-group    ">
@@ -163,7 +177,8 @@
 
         <h5>@mensaje</h5>
 
-
+        </div>
+    </div>
     }
     else
     {

@@ -6,65 +6,83 @@
 
 
 
-<EditForm Model="@proveedores" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
- .Result.User.Identity.IsAuthenticated)
-    {
-        <h3>Registro de Proveedores</h3>
+    <EditForm Model="@proveedores" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        @if (AuthenticationStateProvider.GetAuthenticationStateAsync()
+    .Result.User.Identity.IsAuthenticated)
+        {
 
-        <div class=" form-group">
-            <label for=" Proveedor Id">Id</label>
-            <InputNumber @bind-Value="proveedores.IdProveedor"></InputNumber>
-            <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
-            <ValidationMessage For="@(()=>proveedores.IdProveedor)" />
+            <div class="container">
+                <div style="        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 800px;
+        background-color:  #93baea;
+        box-shadow: 7px 13px 37px #93baea;
+        padding: 60px;
+        margin: auto;
+        margin-top: 60px;
+        border-radius: 4px;
+    ">
+                    <center>
+                        <h3>Registro de Proveedores</h3>
+                    </center>
 
-        </div>
-        <div class="form-group">
-            <label for=" Descripcion">Descripcion</label>
-            <InputText @bind-Value="proveedores.Nombre" class="form-group" />
-            <ValidationMessage For="@(()=>proveedores.Nombre)" />
-        </div>
+                    <div class=" form-group">
+                        <label for=" Proveedor Id">Id</label>
+                        <InputNumber @bind-Value="proveedores.IdProveedor" class="form-control"></InputNumber>
+                        <button type="button" class=" btn-primary " @onclick="Buscar">Buscar</button>
+                        <ValidationMessage For="@(()=>proveedores.IdProveedor)" />
 
-
-        <div class="form-group">
-            <label for=" Fecha">Fecha</label>
-            <InputDate @bind-Value="proveedores.Fecha" class="form-group"></InputDate>
-            <ValidationMessage For="@(()=>proveedores.Fecha)" />
-        </div>
-
-        <div class="form-group">
-            <label for="Telefono">Telefono</label>
-            <InputText @bind-Value="proveedores.Telefono" class="form-group"></InputText>
-            <ValidationMessage For="@(()=>proveedores.Telefono)" />
-        </div>
-
-
-
-        <div class="form-group">
-            <label for="Direccion">Direccion</label>
-            <InputText @bind-Value="proveedores.Direccion" class="form-group" />
-            <ValidationMessage For="@(()=>proveedores.Direccion)" />
-        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for=" Nombre">Nombre</label>
+                        <InputText @bind-Value="proveedores.Nombre" class="form-control" />
+                        <ValidationMessage For="@(()=>proveedores.Nombre)" />
+                    </div>
 
 
+                    <div class="form-group">
+                        <label for=" Fecha">Fecha</label>
+                        <InputDate @bind-Value="proveedores.Fecha" class="form-control"></InputDate>
+                        <ValidationMessage For="@(()=>proveedores.Fecha)" />
+                    </div>
 
-        <div class="form-group">
+                    <div class="form-group">
+                        <label for="Telefono">Telefono</label>
+                        <InputText @bind-Value="proveedores.Telefono" class="form-control"></InputText>
+                        <ValidationMessage For="@(()=>proveedores.Telefono)" />
+                    </div>
 
-            <button type="submit" class="btn btn-primary"> Guardar</button>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-            <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
-        </div>
 
-        <h5>@mensaje</h5>
-    }
-    else
-    {
-        <h1>No esta registrado</h1>
-        <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
-    }
 
-</EditForm>
+                    <div class="form-group">
+                        <label for="Direccion">Direccion</label>
+                        <InputText @bind-Value="proveedores.Direccion" class="form-control" />
+                        <ValidationMessage For="@(()=>proveedores.Direccion)" />
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <button type="submit" class="btn btn-primary"> Guardar</button>
+                        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+                        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+                    </div>
+
+                    <h5>@mensaje</h5>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <h1>No esta registrado</h1>
+            <a href="ReUsuarios" class="btn btn-primary">Ir al Registro</a>
+        }
+
+    </EditForm>
 
 
 @code {

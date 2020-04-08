@@ -10,8 +10,8 @@ using ProyectoFinalAp2.Data;
 namespace ProyectoFinalAp2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200407053309_Initia")]
-    partial class Initia
+    [Migration("20200408021419_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -3,45 +3,107 @@
 
 @using System.Web;
 
-<AuthorizeView>
 
-    
+   
+   
+    <AuthorizeView>
 
-    <NotAuthorized>
+      
 
-        <input type="text"
-               placeholder="Usuario"
-               @bind="@Username" />
+        <NotAuthorized>
+            <div class="container">
 
-        &nbsp;&nbsp;
+                <div style="        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 500px;
+        background-color: #93baea;
+        box-shadow: 7px 13px 37px #93baea;
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+    ">
+                    <style>
 
-        <input type="password"
-               placeholder="Contraseña"
-               @bind="@Password" />
-
-        <a class="ml-md-auto btn btn-primary"
-           href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
-           target="_top">Iniciar Sesion</a>
-
-        <a class="ml-md-auto btn btn-primary"
-           href="ReUsuarios "
-           target="_top">Registrarse</a>
-
-    </NotAuthorized>
-
-</AuthorizeView>
-@code {
-    string Username = "";
-
-    string Password = "";
+                        .titulo {
+                            /*position: absolute;*/
+                            font-size: 2.9vw;
+                            margin-bottom: 10%;
+                            margin-bottom: 10%;
+                            /*left: 50%;*/
+                            text-align: center;
+                            color: black;
+                            font-style: normal;
+                            /*transform: translate(-50%, -50%);*/
+                        }
+                    </style>
 
 
-    private string encode(string param)
+                    <!--- <input type="text"
+              placeholder="Usuario"
+              @bind="@Username" />
 
-    {
+       &nbsp;&nbsp;
 
-        return HttpUtility.UrlEncode(param);
+       <input type="password" placeholder="Contraseña"
+    @bind="@Password" />
+
+       <a class="ml-md-auto btn btn-primary"
+          href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
+          target="_top">Iniciar Sesion</a>
+
+       <a class="ml-md-auto btn btn-primary"
+          href="ReUsuarios "
+          target="_top">Registrarse</a>
+
+       -->
+                    <h1 class="titulo">Inicio de Sesion</h1>
+
+                    <form class="form-group">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Usuario</label>
+                            <input type="text" class="form-control" @bind="Username" id="Usuario" aria-describedby="Usuario">
+
+                        </div>
+                        <div class="form-group">
+                            <label class="font-weight-bold">Contraseña</label>
+                            <input type="password" class="form-control" @bind="Password" id="exampleInputPassword1">
+                        </div>
+                        <div class="form-group-">
+                            <a class=" font-weight-bold btn btn-primary btn-block"
+                               href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password) "
+                               target="_top">Iniciar Sesion</a>
+
+
+                            <a class=" font-weight-bold  btn btn-danger btn-block"
+                               href="ReUsuarios "
+                               target="_top">Registrarse</a>
+
+
+
+
+
+                        </div>
+                    </form>
+                </div>
+
+                </div>
+</NotAuthorized>
+       
+    </AuthorizeView>
+    @code {
+        string Username = "";
+
+        string Password = "";
+
+
+        private string encode(string param)
+
+        {
+
+            return HttpUtility.UrlEncode(param);
+
+        }
 
     }
-
-}

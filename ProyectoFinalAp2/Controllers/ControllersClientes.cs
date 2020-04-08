@@ -85,11 +85,11 @@ namespace ProyectoFinalAp2.Controllers
         public Clientes Buscar(int id)
         {
             Contexto contexto = new Contexto();
-            Clientes clientes = new Clientes();
+            Clientes cliente = new Clientes();
 
             try
             {
-                clientes = contexto.clientes.Find(id);
+                cliente = contexto.clientes.Find(id);
 
             }
             catch (Exception)
@@ -103,7 +103,7 @@ namespace ProyectoFinalAp2.Controllers
 
             }
 
-            return clientes;
+            return cliente;
         }
 
         public bool Eliminar(int id)

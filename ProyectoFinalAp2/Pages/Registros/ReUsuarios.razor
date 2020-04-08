@@ -11,32 +11,39 @@
 <EditForm Model="Usuario" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
-    <center>
-        <h1>Registro de Usuarios</h1>
-    </center>
+    <div class="container">
+        <div style="        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        max-width: 800px;
+        background-color:  #93baea;
+        box-shadow: 7px 13px 37px #93baea;
+        padding: 60px;
+        margin: auto;
+        margin-top: 60px;
+        border-radius: 4px;
+    ">
 
-    <form>
-        <div class="form-row">
-
-
-
+            <center>
+                <h1>Registro de Usuarios</h1>
+            </center>
 
             <div class="form-group    ">
-                <label for="usuarioId " class="col-auto">Id</label>
-                <div class="input-group ">
-                    <InputNumber @bind-Value="@Usuario.IdUsuario" class="form-control" />
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
-                    </div>
-                </div>
+                <label  for="usuarioId "><h4 class="font-weight-bold">Id</h4></label>
+
+                <InputNumber @bind-Value="@Usuario.IdUsuario" class="form-control" />
+
+                <button type="button" class="btn btn-primary" @onclick="Buscar"><span class="oi oi-magnifying-glass" />&nbsp;&nbsp;Buscar</button>
+
+
             </div>
 
 
 
 
 
-            <div class="form-group     ">
-                <label for="FechaIngreso">Fecha</label>
+            <div class="form-group  ">
+                <label class="font-weight-bold" for="FechaIngreso"><h4 class="font-weight-bold">Fecha</h4></label>
                 <InputDate @bind-Value="@Usuario.FechaIngreso" class="form-control" />
             </div>
 
@@ -44,21 +51,21 @@
 
 
             <div class="form-group ">
-                <label for="Nombres">Nombre</label>
+                <label  for="Nombres"><h4 class="font-weight-bold">Nombre</h4></label>
                 <InputText @bind-Value="@Usuario.Nombres" class="form-control" placeholder="Nombre" />
                 <ValidationMessage For="@(()=>Usuario.Nombres)" />
             </div>
 
 
             <div class="form-group ">
-                <label for="Apellidos">Apellido</label>
+                <label  for="Apellidos"><h4 class="font-weight-bold">Apellido</h4></label>
                 <InputText @bind-Value="@Usuario.Apellidos" class="form-control" placeholder="Apellido" />
                 <ValidationMessage For="@(()=>Usuario.Apellidos)" />
             </div>
 
 
             <div class="form-group ">
-                <label for="Email">Email</label>
+                <label  for="Email"><h4 class="font-weight-bold">Email</h4></label>
                 <InputText @bind-Value="@Usuario.Email" class="form-control" placeholder="micorreo@hotmail.com" />
                 <ValidationMessage For="@(()=>Usuario.Email)" />
                 <p class="validation-message"> @MensajeEmail </p>
@@ -68,15 +75,15 @@
 
 
             <div class="form-group ">
-                <label for="Usuario">Usuario</label>
+                <label  for="Usuario"><h4 class="font-weight-bold">Usuario</h4></label>
                 <InputText @bind-Value="@Usuario.Usuario" class="form-control" placeholder="Nombre de usuario" />
                 <ValidationMessage For="@(()=>Usuario.Usuario)" />
-                p>
+
             </div>
 
 
             <div class="form-group ">
-                <label for="NivelUsuario">Nivel del Usuaio</label>
+                <label  for="NivelUsuario"><h4 class="font-weight-bold">Nivel del Usuaio</h4></label>
                 <InputSelect @bind-Value="NivelSeleccionado" class="form-control" @onclick="SeleccionarNivel">
                     <option value="0" disabled selected>Nivel de Usuario</option>
                     <option value="Usuario">Usuario</option>
@@ -89,35 +96,37 @@
 
 
             <div class="form-group ">
-                <label for="Contrasena">Contraseña</label>
+                <label  for="Contrasena"><h4 class="font-weight-bold">Contraseña </h4></label>
                 <input type="password" @bind="@Usuario.Contrasena" class="form-control" placeholder="Contraseña" />
                 <ValidationMessage For="@(()=>Usuario.Contrasena)" />
             </div>
 
 
-            <div class="form-group container ">
-                <label for="ConfirmarContrasena">Confirmar Contraseña</label>
+            <div class="form-group  ">
+                <label  for="ConfirmarContrasena"><h4 class="font-weight-bold">Confirmar Contraseña</h4></label>
                 <input type="password" @bind="@ConfirmarContrasena" class="form-control" placeholder="Confirmar Contrasena" />
                 <p class="validation-message"> @MensajeContrasena </p>
             </div>
 
 
 
-        </div>
-    </form>
 
-    @*<ValidationSummary />*@
 
-    <div class="form-group">
 
-        <button type="submit" class="btn btn-primary"> Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        <button type="button" class="btn btn-danger" @onclick="Limpiar">Limpiar</button>
+            @*<ValidationSummary />*@
+
+            <div class="form-group">
+
+                <button type="submit" class="btn btn-primary "> Guardar</button>
+                <button type="button" class="btn btn-danger " @onclick="Eliminar">Eliminar</button>
+                <button type="button" class="btn btn-danger " @onclick="Limpiar">Limpiar</button>
+            </div>
+
+            <h5>@mensaje</h5>
+
+        </div> 
     </div>
-
-    <h5>@mensaje</h5>
-
-
+        
 </EditForm>
 
 
