@@ -21,7 +21,8 @@ namespace ProyectoFinalAp2.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server= .\SQLEXPRESS; Database=cua; trusted_connection=true");
+            optionsBuilder.UseSqlServer(@"Server=tcp:proyectofinaladbserver.database.windows.net,1433;Initial Catalog=ProyectoFinalA_db;Persist Security Info=False;User ID=EnmanuelP;
+            Password=Argentina12;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
     }
 }

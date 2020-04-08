@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinalAp2.Migrations
 {
-    public partial class initial : Migration
+    public partial class initia : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +59,7 @@ namespace ProyectoFinalAp2.Migrations
                     IdFactura = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IdCliente = table.Column<int>(nullable: false),
-                    Usuario = table.Column<string>(nullable: true),
+                    Cliente = table.Column<string>(nullable: true),
                     IdProducto = table.Column<int>(nullable: false),
                     Total = table.Column<decimal>(nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false)
